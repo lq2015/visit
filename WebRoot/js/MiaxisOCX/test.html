@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<object classid="CLSID:31B9BE74-EE1F-4B50-9A46-321F0A53DF1F" 
+	id="CommOcx" width="1" height="1" codebase="Third_FrontOCX.ocx"></object>
+<script type="text/javascript"
+			src="../jquery-1.4.2.js"></script>
+<script type="text/javascript"
+			src="Third_FrontOCX.js"></script>
+</head>
+<body>
+	<button onclick="TestInitICCard()">IC卡初始化</button>
+	<button onclick="TestReadICCard()">读取IC卡</button>
+	<button onclick="TestWriteICCard()">写IC卡</button>
+	<button onclick="TestGetFingerImage()">指纹图像</button>
+	<button onclick="TestGetFingerMB()">指纹模版</button>
+</body>
+<script type="text/javascript">
+	var ic = new ICCard("miaxis");
+	var finger = new Finger("miaxis");
+	//demo 读学员卡信息
+	function TestReadICCard(){
+			
+			//var param = '{"Field":["CardPhysical", "ManuCode", "CardID", "CardType", "CardVersion", "Publisher","DataVersion","CardState", "EmergSignInTimes", "EmergSignOffTimes", "ICSerialNumber","SIMUSigninNum", "LockReason","VerifyType", "Password", "FingerPlace", "Finger1", "Finger2","StudentNumber", "StudentName", "DocuType", "IDNumber", "SchoolID", "SchoolName", "VehicleModels", "Billing","THETrainTime", "SMUTrainTime", "CARTrainTime", "RechgAmount", "ConsumAnount","SignInDate","SignOffDateTHE","SignOffDateSMU","SignOffDateCAR","SubjectTotal"]}';
+			var param = '{"Field":["CardID","CardType"]}';
+			//var param = '{"Field":["CardPhysical", "ManuCode", "CardID", "CardType", "CardVersion", "Publisher","DataVersion","CardState", "EmergSignInTimes", "EmergSignOffTimes", "ICSerialNumber","SIMUSigninNum", "LockReason","VerifyType", "Password", "FingerPlace", "Finger1", "Finger2","StudentNumber", "StudentName", "DocuType", "IDNumber", "SchoolID", "SchoolName", "VehicleModels", "Billing","THETrainTime", "SMUTrainTime", "CARTrainTime", "RechgAmount", "ConsumAnount","SignInDate","SignOffDateTHE","SignOffDateSMU","SignOffDateCAR"]}';
+			var result = "";
+			result = ic.read(param);
+			alert(parseInt(result.ReadValue[0].Data));
+	}
+	//demo 写IC卡数据
+	function TestWriteICCard(){
+			
+			var writeData = '{"CardID":	"33031120000184","WriteValue":	[{"Field":	["CardType", "CardID"],"Data":	"0000000000000000000000000033031120000184010000000000000000000000000000000000000000000000000000BA"}, {"Field":	["DataVersion"],"Data":	"0B614CBCAEA02841"}, {"Field":	["EmergSignInTimes", "EmergSignOffTimes", "CardState"],"Data":	"006C0F833C89C1AB263BA61C4DE36072"}, {"Field":	["IDNumber", "StudentName", "SchoolID", "DocuType", "StudentNumber", "VehicleModels"],"Data":	"D58175B728510FB14EB7737CCB8048FB9710FDB6BE3D6196364BDA38B8326F0596FE06133ED866875DCBC4CDA243DFB0CF84E513A15FECC8C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C05F62AFBA685098"}, {"Field":	["Password", "VerifyType", "FingerPlace", "Finger1", "Finger2"],"Data":	"F94B167DF627AC3EC95A8ADA5DC32B917EBFE63D37C6E69821347828C5FF72640245F023C1018F6D7EC82E1F1F541C343904DBBA095E10450B54287CE76873F28A169A7ED4B73CEC56FAE615C97121E75D389D3171DEE2E21BB24EB31C2AEA2A83A082652862879FBDBCD0065CB313F475F553D632B5198FFA520D8FB996E90E7E92A3CE523C724698627A7B838EC708DD1855AEDA81D9C92E213F4A3186E6CE3794E157C982F21A09E2D181E63CD3DC0015C3B8271A2F7C5030CF00496DBC02C62D4C71F8AC878418C306AA872DFA3CDDCE5096509225169820402ECDA6B3AE90AFD7E52C4BBA8F56CCC0188660A7F216E2E1CA3AE980DA43849F91DACD8D0A6381D1C6F2CA9164EE8A7D685C815CA8"}, {"Field":	["THETrainTime", "SMUTrainTime", "CARTrainTime", "RechgAmount", "ConsumAnount"],"Data":	"6F6C22E923A0201AA9F69AA15CEAAADBCFC84E5C5E56818B"}, {"Field":	["SignInDate", "SignOffDateTHE", "SignOffDateSMU", "SignOffDateCAR"],"Data":	"40C42EF2664EE361D469C7B097A0DB64CDF20113655CC130"}, {"Field":	["SubjectTotal"],"Data":	"0A4621F9BD5885E0D2ED0AC1218B525E602B1A1CF90695757B17914E77896C5DC818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81C818BA22F82AFE81"}]}';
+			
+			var result = "";
+			result = writeICCard(writeData);
+			if(result!=""){
+			alert(result);
+			}
+	}
+	//初始化IC卡   已调试  但返回值是空的
+	function TestInitICCard(){
+			var param = '{"CardID":	"33031120000184","WriteValue":	[{"Field":	["CardType", "CardID"],"Data":	"0000000000000000000000000033031120000184010000000000000000000000000000000000000000000000000000BA"}]}';
+			result = ic.init(param);
+			if(result!=""){
+				alert(result);
+			}
+	}
+	//读取指纹仪硬件版本 读取不到
+	function TestGetVerFinger(){
+		var result = getVerFinger();
+		if(result!=""){
+			alert(result);
+		}
+	}
+	//获取指纹图像 没有返回值
+	function TestGetFingerImage(){
+		var result = finger.getImg();
+		if(result!=""){
+			alert(result);
+		}
+	}
+	//获取指纹模版
+	function TestGetFingerMB(){
+		var result = finger.getMB();
+		if(result!=""){
+			alert(result);
+		}
+	}
+	//读二代证
+	function TestReadIDCard(){
+		var resutl = readIDCard();
+		if(result!=""){
+			alert(result);
+		}
+	}
+</script>
+</html>

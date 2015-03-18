@@ -1,0 +1,105 @@
+*{font-size:12px; font-family:Tahoma,Verdana,Microsoft YaHei}
+body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td{margin:0;padding:0;}
+body,button,input,select,textarea{font-size:12px; color:#000; font-family:Microsoft YaHei}
+h1,h2,h3,h4,h5,h6{font-size:100%;}
+ul,ol,li{list-style:none;}
+
+body{
+    font-family:verdana,helvetica,arial,sans-serif;
+	background:#fff;
+}
+h3{
+	font-size:20px;
+	font-weight:bold;
+	margin:12px 0;
+}
+h4{
+	font-size:16px;
+	font-weight:bold;
+	color:#CC0000;
+	margin:10px 0;
+}
+h5{
+	font-size:14px;
+	font-weight:bold;
+	color:#990000;
+	margin:5px 0;
+}
+.doc-table{
+	border-collapse:collapse;
+	border-spacing:0;
+	width:100%;
+}
+.doc-table th,.doc-table td{
+	border:1px solid #8CACBB;
+	padding:0.3em 0.7em;font-weight: normal;
+}
+.doc-table th{
+	background:#eee;
+}
+.doc-table pre{
+	font-family:Verdana;
+	font-size:12px;
+	color:#006600;
+	background:#fafafa;
+	padding:5px;
+}
+
+form input {
+	width:150px;
+	border:solid 1px #d3d3d3; 
+	padding:1px; 
+	line-height:16px; 
+	height:16px;
+	color:#000000;
+}
+
+.query_panel {
+	padding: 10px 10px 10px 10px;
+}
+
+.query_panel  div {
+	padding-bottom: 10px;
+}
+
+.query_panel table .tdlabel {
+	width:80px;
+	text-align: right;
+}
+
+.query_panel table tr {
+	height:25px;
+}
+
+.query_panel table .tdbutton {
+	width:90px;
+	text-align: right;
+}
+.ftitle {
+	font-size: 14px;
+	font-weight: bold;
+	padding: 5px 0;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #CCC;
+	width: 98%;
+	margin-left: 10px;
+}
+
+#myaccrdion {list-style-type:none;margin:0px; padding:0px;}
+#myaccrdion li{ padding:0px;list-style-type:none; }
+#myaccrdion li div{margin:2px 0px;height:20px;padding-left:20px;padding-top:5px;}
+#myaccrdion li div:hover{border:1px dashed #99BBE8; background:#E0ECFF;cursor:pointer;}
+#myaccrdion li div span{height:20px;line-height:16px;}
+.selected{border:0px solid #99BBE8; background:#E0ECFF;cursor:default;}
+.leftMenuItem{width:20px;float:left;}
+.icon-node{
+	background:url('../images/pictures.png') no-repeat ;
+}
+
+.top_menu_bar {
+	height: 24px;
+	line-height: 24px;
+	overflow: hidden;
+	background: url('../images/top_menu_bg.gif') repeat-x;
+	border-bottom: 1px solid #6893CF;
+}
