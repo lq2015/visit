@@ -5,96 +5,61 @@ BODY {
 	background-color: #ffffff;
 }
 
-TD span {
-	FONT-SIZE: 13px;
-	COLOR: #ffffff;
-}
 
 #main {
-	position: absolute;
-	width: 900px;
-	left: 50%;
+	position: absolute;;
+	width:100%;
 	top: 50%;
-	margin-left: -450px;
 	margin-top: -280px;
+}
+
+form input {
+	width: 161px;
+	border:solid 1px  #083272; 
+	padding:1px; 
+	line-height:22px; 
+	height:22px;
+	color:#000000;
 }
 </STYLE>
 <body>
 	<div id="main">
-		<form id="loginform" method="post" action="main.do?loginSubmit">
-			<TABLE cellSpacing=0 cellPadding=0 width=900 align=center border=0>
-				<TBODY>
-					<TR>
-						<TD style="HEIGHT: 105px">
-							<IMG src="images/login_1.gif" border=0>
-						</TD>
-					</TR>
-					<TR>
-						<TD background=images/login_2.jpg height=300>
-							<TABLE height=300 cellPadding=0 width=900 border=0>
-								<TBODY>
-									<TR>
-										<TD colSpan=2 height=35></TD>
-									</TR>
-									<TR>
-										<TD width=360></TD>
-										<TD>
-											<TABLE cellSpacing=0 cellPadding=2 border=0>
-												<TBODY>
-													<TR>
-														<TD style="HEIGHT: 30px" width=70>
-															<span>登&nbsp;&nbsp;录&nbsp;名：</span>
-														</TD>
-														<TD>
-															<input class="easyui-validatebox" id="loginName"
-																name="loginName" value="${loginName }"
-																style="height: 18px; width: 150px"
-																data-options="required:true" />
-														</TD>
-													</TR>
-													<TR>
-														<TD style="HEIGHT: 30px">
-															<span>登录密码：</span>
-														</TD>
-														<TD>
-															<input class="easyui-validatebox" id="loginPassword"
-																type="password" name="loginPassword"
-																value="${loginPassword }"
-																style="height: 18px; width: 150px"
-																data-options="required:true" />
-														</TD>
-													</TR>
-
-													<TR>
-														<TD style="HEIGHT: 18px"></TD>
-														<TD style="HEIGHT: 18px"></TD>
-														<TD style="HEIGHT: 18px"></TD>
-													</TR>
-													<TR>
-														<TD></TD>
-														<TD>
-															<INPUT style="background:url('images/login_button.gif') no-repeat ;BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px;width:152px;height:36px;cursor:hand"
+	    <form id="loginform" method="post" action="main.do?loginSubmit">
+		<table width="100%" height="550" border="0"  cellspacing="0"  >
+		  <tr>
+			<td style="background:url('images/login_1.jpg')">&nbsp;</td>
+			<td style="background:url('images/login.jpg') no-repeat " width="1003" align="center">
+					<table width="250" border="0" style="padding-top:80px">
+					  <tr height="40">
+						<td><img src="images/user.png" ></td>
+						<td >用户:</td>
+							<td>
+								<input class="easyui-validatebox" id="loginName"name="loginName" value="${loginName }"data-options="required:true" />
+							</td>
+					  </tr>
+					  <tr height="40">
+						<td><img src="images/pwd.png" ></td>
+						<td>密码:</td>
+						<td>
+							<input class="easyui-validatebox" id="loginPassword" type="password" name="loginPassword" value="${loginPassword }"data-options="required:true" />	
+					    </td>
+					  </tr>
+					 <tr height="60">
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td >
+							<INPUT style="background:url('images/login_button.png') no-repeat ;BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px;width:161px;height:36px;cursor:hand"
 																id="submitBtn" type=button  >
-														</TD>
-													</TR>
-												</TBODY>
-											</TABLE>
-										</TD>
-									</TR>
-								</TBODY>
-							</TABLE>
-						</TD>
-					</TR>
-					<TR>
-						<TD>
-							<IMG src="images/login_3.jpg" border=0>
-						</TD>
-					</TR>
-				</TBODY>
-			</TABLE>
-			<input type="hidden" id="machineCode" name="machineCode">
-			<input type="hidden" id="hostname" name="hostname">
-		</form>
+						</td>
+					  </tr>
+					</table>
+			</td>
+			<td style="background:url('images/login_1.jpg')">&nbsp;</td>
+		  </tr>
+		</table>
+		<input type="hidden" id="machineCode" name="machineCode">
+		<input type="hidden" id="hostname" name="hostname">
+	</form>
 	</div>
 	<script type="text/javascript">
 	
