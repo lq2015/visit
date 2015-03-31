@@ -18,10 +18,6 @@ public class PersonPhoto implements java.io.Serializable {
 	 */
 	private Integer id;
 	/**
-	 * 人员ID
-	 */
-	private Integer phPersonId;
-	/**
 	 * 照片数据
 	 */
 	private String phPhoto;
@@ -34,15 +30,6 @@ public class PersonPhoto implements java.io.Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	@Column(name = "PH_PERSON_ID")
-	public Integer getPhPersonId() {
-		return this.phPersonId;
-	}
-
-	public void setPhPersonId(Integer phPersonId) {
-		this.phPersonId = phPersonId;
 	}
 
 	@Column(name = "PH_PHOTO", length = 16777215)

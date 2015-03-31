@@ -1,12 +1,19 @@
 package com.miaxis.visit.entity;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.miaxis.common.util.CodeNameEnum;
+import com.miaxis.visit.entity.PersonInfo.Status;
 
 /**
  * 服务单位信息
@@ -40,19 +47,7 @@ public class UnitInfo implements java.io.Serializable {
 	/**
 	 * 联系手机
 	 */
-	private Integer uiMobile;
-	/**
-	 * 服务项目
-	 */
-	private String uiServeItem;
-	/**
-	 * 服务开始时间
-	 */
-	private Date uiServeStart;
-	/**
-	 * 服务结束时间
-	 */
-	private Date uiServeEnd;
+	private String uiMobile;
 	/**
 	 * 建档日期
 	 */
@@ -66,11 +61,16 @@ public class UnitInfo implements java.io.Serializable {
 	 */
 	private Date uiOperateTime;
 	/**
-	 * 状态 0 正常 9 注销
+	 * 状态 0 录入 1正常 9 注销
 	 */
 	private String uiStatus;
+	/**
+	 * 备注
+	 */
+	private String uiMemo;
 
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "ID", unique = true, nullable = false)
 	public Integer getId() {
 		return this.id;
@@ -117,41 +117,12 @@ public class UnitInfo implements java.io.Serializable {
 	}
 
 	@Column(name = "UI_MOBILE")
-	public Integer getUiMobile() {
+	public String getUiMobile() {
 		return this.uiMobile;
 	}
 
-	public void setUiMobile(Integer uiMobile) {
+	public void setUiMobile(String uiMobile) {
 		this.uiMobile = uiMobile;
-	}
-
-	@Column(name = "UI_SERVE_ITEM", length = 250)
-	public String getUiServeItem() {
-		return this.uiServeItem;
-	}
-
-	public void setUiServeItem(String uiServeItem) {
-		this.uiServeItem = uiServeItem;
-	}
-
-	@Temporal(TemporalType.DATE)
-	@Column(name = "UI_SERVE_START", length = 0)
-	public Date getUiServeStart() {
-		return this.uiServeStart;
-	}
-
-	public void setUiServeStart(Date uiServeStart) {
-		this.uiServeStart = uiServeStart;
-	}
-
-	@Temporal(TemporalType.DATE)
-	@Column(name = "UI_SERVE_END", length = 0)
-	public Date getUiServeEnd() {
-		return this.uiServeEnd;
-	}
-
-	public void setUiServeEnd(Date uiServeEnd) {
-		this.uiServeEnd = uiServeEnd;
 	}
 
 	@Temporal(TemporalType.DATE)
@@ -173,7 +144,7 @@ public class UnitInfo implements java.io.Serializable {
 		this.uiOperator = uiOperator;
 	}
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "UI_OPERATE_TIME", length = 0)
 	public Date getUiOperateTime() {
 		return this.uiOperateTime;
@@ -191,5 +162,31 @@ public class UnitInfo implements java.io.Serializable {
 	public void setUiStatus(String uiStatus) {
 		this.uiStatus = uiStatus;
 	}
+	
+	@Column(name = "UI_MEMO", length = 250)
+	public String getUiMemo() {
+		return uiMemo;
+	}
 
+	public void setUiMemo(String uiMemo) {
+		this.uiMemo = uiMemo;
+	}
+	
+	/**
+	 * 记录状态
+	 * @author liu.qiao
+	 *
+	 */
+	public static class Status extends CodeNameEnum<String> {
+		public static Status NORMAL = new Status("1", "正常");
+		public static Status CANCEL = new Status("9", "注销");
+
+		public static Status[] values() {
+			return new Status[] { NORMAL, CANCEL };
+		}
+
+		public Status(String code, String name) {
+			super(code, name);
+		}
+	}
 }

@@ -4,11 +4,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.miaxis.common.util.CodeNameEnum;
 
 /**
  * 支行网点表
+ * 
  * @author liu.qiao
- *
+ * 
  */
 @Entity
 @Table(name = "vt_bank_info")
@@ -46,7 +50,7 @@ public class BankInfo implements java.io.Serializable {
 	 */
 	private String biMemo;
 	/**
-	 * 状态：0  正常  9注销
+	 * 状态：0 录入  1 正常  9注销
 	 */
 	private String biStatus;
 
@@ -132,4 +136,39 @@ public class BankInfo implements java.io.Serializable {
 		this.biStatus = biStatus;
 	}
 
+	@Transient
+	public String getStatusText() {
+		String status = this.biStatus;
+		if(status==null) status="";
+		if(status.equals("")) return "";
+		
+		switch (Integer.parseInt(status)) {
+		case 0:
+			return BankInfo.Status.INPUT.getName();
+		case 1:
+			return BankInfo.Status.NORMAL.getName();
+		case 9:
+			return BankInfo.Status.CANCEL.getName();
+		}
+		return "";
+	}
+	
+	/**
+	 * 记录状态
+	 * @author liu.qiao
+	 *
+	 */
+	public static class Status extends CodeNameEnum<String> {
+		public static Status INPUT = new Status("0", "录入");
+		public static Status NORMAL = new Status("1", "正常");
+		public static Status CANCEL = new Status("9", "注销");
+
+		public static Status[] values() {
+			return new Status[] { INPUT, NORMAL, CANCEL };
+		}
+
+		public Status(String code, String name) {
+			super(code, name);
+		}
+	}
 }

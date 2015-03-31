@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.miaxis.common.exception.BusinessException;
 
-
 /**
  * 一般工具类
  * 
@@ -40,13 +39,14 @@ public class CommonUtil<T> {
 	public static final Integer FILE_MAX_SIZE = 10 * 1024 * 1024;
 	/**
 	 * 文件存储路径
+	 * 
 	 * @param length
 	 * @return
 	 */
-	public static final String STUDENT_PICTURE = "upload/student";
+	public static final String PERSON_PICTURE = "upload/person";
+	public static final String UNIT_PACT = "upload/pact";
 	public static final String UPLOAD_TEMP = "upload/temp";
-	public static final String STUDENT_TWODIMCODE ="upload/student/twoDimensionCode"; //二维码存储
-	public static final String EXAMNOTSIGNAPPLY_PHOTO ="upload/student/examNotSignApplyPhoto"; //考试应急签到申请图片
+
 	// 获取随机数
 	public static String getCardId(int length) {
 		String val = "";
@@ -84,6 +84,7 @@ public class CommonUtil<T> {
 	 * 文件名流水号长度
 	 */
 	public static final int SERIAL_NUM_LENGTH = 10000;
+
 	/**
 	 * 获取文件大小
 	 * 
@@ -132,10 +133,10 @@ public class CommonUtil<T> {
 	 */
 	public static String fileNameGenerator(String suffix) {
 		Calendar now = new GregorianCalendar();
-//		now.add(Calendar.MONTH, 1);
+		// now.add(Calendar.MONTH, 1);
 		int month = now.get(Calendar.MONTH);
-		month=month+1;
-		
+		month = month + 1;
+
 		String result = ""
 				+ now.get(Calendar.YEAR)
 				+ month
@@ -175,16 +176,21 @@ public class CommonUtil<T> {
 
 		return result;
 	}
+
 	/**
 	 * 获取资源文件配置的某个key的值
-	 * @param entityName 当前class  A.class
-	 * @param resourse 资源文件的名字  b.properties
-	 * @param pathKey  关键字
+	 * 
+	 * @param entityName
+	 *            当前class A.class
+	 * @param resourse
+	 *            资源文件的名字 b.properties
+	 * @param pathKey
+	 *            关键字
 	 * @return 关键字的值
 	 */
-	public static String getKeyValue(String resourse,String pathKey){
+	public static String getKeyValue(String resourse, String pathKey) {
 		InputStream ips = CommonUtil.class.getClassLoader()
-			.getResourceAsStream(resourse);
+				.getResourceAsStream(resourse);
 		Properties p = new Properties();
 		try {
 			p.load(ips);
@@ -194,25 +200,32 @@ public class CommonUtil<T> {
 			return "";
 		}
 	}
-	
+
 	/**
-	 * 上传文件 
+	 * 上传文件
+	 * 
 	 * @param fileUpload
 	 * @param path
 	 * @return
 	 */
-	public static String uploadPic(MultipartFile fileUpload,String path,String newFileName,String[] suffixsRange){
+	public static String uploadPic(MultipartFile fileUpload, String path,
+			String newFileName, String[] suffixsRange) {
 		String fileName = fileUpload.getOriginalFilename();
-		if("".equals(fileName) || fileName == null){
+		if ("".equals(fileName) || fileName == null) {
 			return "";
 		}
-		
-		String[] suffixs=fileName.split("\\.");
-	    String suffix = suffixs[suffixs.length-1];
-	    
-	    //判断文件类型
-	    if(suffixsRange.length>0){
-	    	String suffixsRangeStr="";
+
+		// 限定文件大小
+		if (fileUpload.getSize() > 800000) {
+			throw new BusinessException("上传文件大小不能超过80K!");
+		}
+
+		String[] suffixs = fileName.split("\\.");
+		String suffix = suffixs[suffixs.length - 1];
+
+		// 判断文件类型
+		if (suffixsRange.length > 0) {
+			String suffixsRangeStr = "";
 			for (int i = 0; i < suffixsRange.length; i++) {
 				if (suffixsRangeStr.equals("")) {
 					suffixsRangeStr = suffixsRange[i];
@@ -220,32 +233,33 @@ public class CommonUtil<T> {
 					suffixsRangeStr = suffixsRangeStr + "," + suffixsRange[i];
 				}
 			}
-	    	 
-	    	if(suffixsRangeStr.indexOf(suffix)<0){
-		    	throw new BusinessException("只支持文件类型为【"+suffixsRangeStr+"】的文件!");
-		    }
-	    }
-		
-	    if(newFileName==null || newFileName.equals("")){
-	        //转化后的文件名字
+
+			if (suffixsRangeStr.indexOf(suffix) < 0) {
+				throw new BusinessException("只支持文件类型为【" + suffixsRangeStr
+						+ "】的文件!");
+			}
+		}
+
+		if (newFileName == null || newFileName.equals("")) {
+			// 转化后的文件名字
 			newFileName = CommonUtil.fileNameGenerator(suffix);
-		}else{
+		} else {
 			newFileName = newFileName + "." + suffix;
 		}
-		
-		//生成文件
-		File targetFile = new File(path, newFileName);  
-        try {
-        	if(!targetFile.exists()){  
-                targetFile.mkdirs();  
-            }
-        	fileUpload.transferTo(targetFile);  
-        } catch (Exception e) {  
-            e.printStackTrace();  
-        }
-        return newFileName;
+
+		// 生成文件
+		File targetFile = new File(path, newFileName);
+		try {
+			if (!targetFile.exists()) {
+				targetFile.mkdirs();
+			}
+			fileUpload.transferTo(targetFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return newFileName;
 	}
-	
+
 	public static byte[] readFile(String filePath) throws Exception {
 		InputStream fis = null;
 		byte[] buf = new byte[0];
@@ -273,7 +287,7 @@ public class CommonUtil<T> {
 		}
 		return buf;
 	}
-	
+
 	/**
 	 * 32位MD5加密
 	 * 
@@ -305,33 +319,53 @@ public class CommonUtil<T> {
 		}
 		return s;
 	}
-	
+
 	/**
 	 * 获取用户真实的IP地址
+	 * 
 	 * @param request
 	 * @return
 	 */
-	public static  String getIpAddr()  {
+	public static String getIpAddr() {
 		HttpServletRequest request = ContextHolderUtils.getRequest();
-		//代理头信息
-        String ip  =  request.getHeader( "X-Forwarded-For" );
-        
-        if (ip  == null || ip.length()==0 ||"unknown" .equalsIgnoreCase(ip)){
-        	ip  =  request.getHeader( "X-Real-IP" );
-        } 
-        
-        if (ip  == null || ip.length()==0 ||"unknown" .equalsIgnoreCase(ip)){
-        	ip  =  request.getHeader( "Proxy-Client-IP" );
-        } 
-        
-        if (ip  == null || ip.length()==0 ||"unknown" .equalsIgnoreCase(ip)){
-        	ip  =  request.getHeader( "WL-Proxy-Client-IP" );
-        }
-        
-        if (ip  == null || ip.length()==0 ||"unknown" .equalsIgnoreCase(ip)){
-        	ip  =  request.getRemoteAddr();
-        } 
-        
-        return  ip;
-   }
+		// 代理头信息
+		String ip = request.getHeader("X-Forwarded-For");
+
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("X-Real-IP");
+		}
+
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("Proxy-Client-IP");
+		}
+
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getHeader("WL-Proxy-Client-IP");
+		}
+
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.getRemoteAddr();
+		}
+
+		return ip;
+	}
+	
+	/**
+	 * 检测相对路径的文件是否在本地存在
+	 * @param fileName
+	 * @return
+	 */
+	public static boolean isFileExists(String fileName) {
+		if(fileName==null) fileName="";
+		if(!fileName.equals("")){
+			HttpServletRequest request = ContextHolderUtils.getRequest();
+			String filePath = request.getSession().getServletContext()
+					.getRealPath(fileName); // 绝对路径
+			File file = new File(filePath);
+			return file.exists();
+		}else{
+			return true;
+		}
+		
+	}
 }

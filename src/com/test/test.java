@@ -13,10 +13,13 @@ public class test {
 //        us.findByProperty(CoachPoster.class, "title", "张三"); 
 //       System.out.println( CommonUtil.md5("miaxishz"));
 		
-		Base64Utils Base64Utils = new Base64Utils();
-		String ls = Base64Utils.GetImageStr("d:\\111.bmp");
-		Base64Utils.GenerateImage(ls,"e:\\222.bmp");
-		System.out.println("");
+//		Base64Utils Base64Utils = new Base64Utils();
+//		String ls = Base64Utils.GetImageStr("d:\\111.bmp");
+//		Base64Utils.GenerateImage(ls,"e:\\222.bmp");
+//		System.out.println("");
+		String str="d:\\data\\1.jpg";
+		str = str.replace("\\", "/");
+		System.out.println(str.substring(0, str.lastIndexOf("/")));
         
     }  
 }

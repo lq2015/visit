@@ -1,7 +1,10 @@
 package com.miaxis.visit.entity;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -29,7 +32,9 @@ public class UnitPactPic implements java.io.Serializable {
 	 * 合同图片数据
 	 */
 	private String upPic;
+	
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "ID", unique = true, nullable = false)
 	public Integer getId() {
 		return this.id;

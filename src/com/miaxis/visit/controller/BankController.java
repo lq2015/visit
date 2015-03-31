@@ -3,7 +3,11 @@ package com.miaxis.visit.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,9 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.miaxis.common.base.CommonController;
+import com.miaxis.common.exception.BusinessException;
 import com.miaxis.common.util.PageConfig;
 import com.miaxis.common.util.QueryCondition;
 import com.miaxis.visit.entity.BankInfo;
+import com.miaxis.visit.service.BankService;
 
 /**
  * 银行网点
@@ -25,6 +31,25 @@ import com.miaxis.visit.entity.BankInfo;
 @Controller
 @RequestMapping("/bank")
 public class BankController extends CommonController {
+	
+	@Autowired
+	public BankService bankService;
+	
+	/**
+	 * 主页
+	 * 
+	 * @param role
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(params = "main")
+	public ModelAndView main(HttpServletRequest request,
+			HttpServletResponse response) {
+		ModelAndView mav = this
+				.getModelMainMav("WEB-INF/pages/visit/bank/list");
+		return mav;
+	}
+
 	/**
 	 * 获取列表
 	 * 
@@ -34,34 +59,34 @@ public class BankController extends CommonController {
 	@RequestMapping(params = "list")
 	@ResponseBody
 	public Map list(String page, String sort, String order, String rows,
-			String parentMenu) {
-		
+			String qBiStatus, String qBiName) {
+
 		/**
 		 * 初始化分页对象
 		 */
 		PageConfig pageConfig = new PageConfig();
 		pageConfig.setPaging(false);
-		
+
 		QueryCondition qc = new QueryCondition();
-		if(StringUtils.isNotEmpty(sort)){
-			if (StringUtils.equals(order.toUpperCase(), QueryCondition.DESC)){
+		if (StringUtils.isNotEmpty(sort)) {
+			if (StringUtils.equals(order.toUpperCase(), QueryCondition.DESC)) {
 				qc.desc(sort);
-			}else{
+			} else {
 				qc.asc(sort);
 			}
 		}
-		qc.asc("orderNum");
-		
-		if (StringUtils.isNotEmpty(parentMenu)) {
-			qc.eq("parentMenu", parentMenu);
-		}else{
-			return null;
+		qc.asc("id");
+
+		if (StringUtils.isNotEmpty(qBiName)) {
+			qc.like("biName", qBiName.concat("%"));
+		}
+		if (StringUtils.isNotEmpty(qBiStatus)) {
+			qc.eq("biStatus", qBiStatus);
 		}
 
-		List list = commonService.getPageList(BankInfo.class,pageConfig,qc);
-		return this.buidResultMap(list,list.size());
+		List list = commonService.getPageList(BankInfo.class, pageConfig, qc);
+		return this.buidResultMap(list, list.size());
 	}
-
 
 	/**
 	 * 修改或新增
@@ -71,8 +96,7 @@ public class BankController extends CommonController {
 	 */
 	@RequestMapping(params = "insertOrUpdate")
 	public ModelAndView insertOrUpdate(String id, String operationType) {
-		ModelAndView mav = new ModelAndView(
-				"WEB-INF/pages/visit/bank/detail");
+		ModelAndView mav = new ModelAndView("WEB-INF/pages/visit/bank/detail");
 		if (operationType.equals("edit")) {
 			BankInfo bankInfo = commonService.get(BankInfo.class, id);
 			mav.getModelMap().put("bankInfo", bankInfo);
@@ -101,9 +125,11 @@ public class BankController extends CommonController {
 			try {
 				commonService.delete(bankInfo);
 			} catch (Exception e) {
+				e.printStackTrace();
 				return this.buidMessageMap("保存失败了", "1");
 			}
-			return this.buidMessageMap("网点【"+bankInfo.getBiName()+"】信息删除成功!",	"0");
+			return this.buidMessageMap("网点【" + bankInfo.getBiName()
+					+ "】信息删除成功!", "0");
 		}
 	}
 
@@ -119,22 +145,42 @@ public class BankController extends CommonController {
 		String msg = operationType.equals("edit") ? "修改" : "新增";
 		try {
 			if (operationType.equals("edit")) {
-				String message = "";
-				BankInfo r = (BankInfo) commonService.get(BankInfo.class, bankInfo.getId());
-				
-				if (r == null) {
-					return this.buidMessageMap("该网点信息不存在!", "1");
-				} else {
-					commonService.updateEntitie(bankInfo);
-				}
+				bankService.updateBank(bankInfo);
 			} else {
-				commonService.save(bankInfo);
+				bankService.addBank(bankInfo);
 			}
+		} catch (BusinessException e) {
+			return this.buidMessageMap(e.getMessage() , "1");
 		} catch (Exception e) {
+			e.printStackTrace();
 			return this.buidMessageMap(msg + "网点失败", "1");
 		}
 
 		return this.buidMessageMap(msg + "网点成功", "0");
 	}
 	
+	/**
+	 * 修改记录状态
+	 * @param id
+	 * @param status
+	 * @return
+	 */
+	@RequestMapping(params = "updateStatus", method = RequestMethod.POST)
+	@ResponseBody
+	public Map updateStatus(String id,String status) {
+		BankInfo bankInfo = commonService.get(BankInfo.class, id);
+		if (bankInfo == null) {
+			return this.buidMessageMap("该记录信息不存在!", "1");
+		} else {
+			try {
+				bankInfo.setBiStatus(status);
+				commonService.updateEntitie(bankInfo);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return this.buidMessageMap("修改记录状态失败", "1");
+			}
+			return this.buidMessageMap("修改记录操作成功!","0");
+		}
+	}
+
 }

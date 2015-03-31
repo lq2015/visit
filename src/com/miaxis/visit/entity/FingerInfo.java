@@ -1,6 +1,9 @@
 package com.miaxis.visit.entity;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -27,7 +30,7 @@ public class FingerInfo implements java.io.Serializable {
 	/**
 	 * 手指编码(0,1,2,3,4,5.6,7,8,9)分别对应（左手小拇指、左手无名指、左手中指、左手食指、左手大拇指、右手大拇指、右手食指、右手中指、右手无名指、右手小拇指）
 	 */
-	private String fiCode;
+	private Integer fiCode;
 	/**
 	 * 手指名称（左手小拇指、左手无名指、左手中指、左手食指、左手大拇指、右手大拇指、右手食指、右手中指、右手无名指、右手小拇指）
 	 */
@@ -68,12 +71,12 @@ public class FingerInfo implements java.io.Serializable {
 		this.fiPerson = fiPerson;
 	}
 
-	@Column(name = "FI_CODE", length = 4)
-	public String getFiCode() {
+	@Column(name = "FI_CODE")
+	public Integer getFiCode() {
 		return this.fiCode;
 	}
 
-	public void setFiCode(String fiCode) {
+	public void setFiCode(Integer fiCode) {
 		this.fiCode = fiCode;
 	}
 
@@ -122,5 +125,20 @@ public class FingerInfo implements java.io.Serializable {
 	public void setFiGatherTime(Date fiGatherTime) {
 		this.fiGatherTime = fiGatherTime;
 	}
-
+	
+	public String getCodeName(Integer codeNum){
+		Map<Integer, String> fingerMap = new HashMap<Integer, String>();
+		fingerMap.put(0, "左手小拇指");
+		fingerMap.put(1, "左手无名指");
+		fingerMap.put(2, "左手中指");
+		fingerMap.put(3, "左手食指");
+		fingerMap.put(4, "左手大拇指");
+		fingerMap.put(5, "右手大拇指");
+		fingerMap.put(6, "右手食指");
+		fingerMap.put(7, "右手中指");
+		fingerMap.put(8, "右手无名指");
+		fingerMap.put(8, "右手小拇指");
+		
+		return (String)fingerMap.get(codeNum);
+	}
 }

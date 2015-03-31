@@ -3,7 +3,11 @@ package com.miaxis.visit.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,9 +15,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.miaxis.common.base.CommonController;
+import com.miaxis.common.exception.BusinessException;
 import com.miaxis.common.util.PageConfig;
 import com.miaxis.common.util.QueryCondition;
 import com.miaxis.visit.entity.UnitInfo;
+import com.miaxis.visit.service.PublicService;
+import com.miaxis.visit.service.UnitService;
 
 /**
  * 访客单位管理
@@ -25,6 +32,26 @@ import com.miaxis.visit.entity.UnitInfo;
 @Controller
 @RequestMapping("/unit")
 public class UnitController extends CommonController {
+	@Autowired
+	public UnitService unitService;
+	@Autowired
+	public PublicService publicService;
+
+	/**
+	 * 主页
+	 * 
+	 * @param role
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(params = "main")
+	public ModelAndView main(HttpServletRequest request,
+			HttpServletResponse response) {
+		ModelAndView mav = this
+				.getModelMainMav("WEB-INF/pages/visit/unit/list");
+		return mav;
+	}
+
 	/**
 	 * 获取列表
 	 * 
@@ -35,33 +62,26 @@ public class UnitController extends CommonController {
 	@ResponseBody
 	public Map list(String page, String sort, String order, String rows,
 			String parentMenu) {
-		
+
 		/**
 		 * 初始化分页对象
 		 */
 		PageConfig pageConfig = new PageConfig();
 		pageConfig.setPaging(false);
-		
+
 		QueryCondition qc = new QueryCondition();
-		if(StringUtils.isNotEmpty(sort)){
-			if (StringUtils.equals(order.toUpperCase(), QueryCondition.DESC)){
+		if (StringUtils.isNotEmpty(sort)) {
+			if (StringUtils.equals(order.toUpperCase(), QueryCondition.DESC)) {
 				qc.desc(sort);
-			}else{
+			} else {
 				qc.asc(sort);
 			}
 		}
-		qc.asc("orderNum");
-		
-		if (StringUtils.isNotEmpty(parentMenu)) {
-			qc.eq("parentMenu", parentMenu);
-		}else{
-			return null;
-		}
+		qc.asc("id");
 
-		List list = commonService.getPageList(UnitInfo.class,pageConfig,qc);
-		return this.buidResultMap(list,list.size());
+		List list = commonService.getPageList(UnitInfo.class, pageConfig, qc);
+		return this.buidResultMap(list, list.size());
 	}
-
 
 	/**
 	 * 修改或新增
@@ -70,12 +90,11 @@ public class UnitController extends CommonController {
 	 * @return
 	 */
 	@RequestMapping(params = "insertOrUpdate")
-	public ModelAndView insertOrUpdate(String id, String operationType) {
-		ModelAndView mav = new ModelAndView(
-				"WEB-INF/pages/visit/unit/unitDetail");
+	public ModelAndView insertOrUpdate(Integer id, String operationType) {
+		ModelAndView mav = new ModelAndView("WEB-INF/pages/visit/unit/detail");
 		if (operationType.equals("edit")) {
-			UnitInfo visitUnit = commonService.get(UnitInfo.class, id);
-			mav.getModelMap().put("visitUnit", visitUnit);
+			UnitInfo unitInfo = commonService.get(UnitInfo.class, id);
+			mav.getModelMap().put("unitInfo", unitInfo);
 			mav.getModelMap().put("operationType", "edit");
 		} else {
 			mav.getModelMap().put("operationType", "insert");
@@ -93,18 +112,14 @@ public class UnitController extends CommonController {
 	@RequestMapping(params = "del", method = RequestMethod.POST)
 	@ResponseBody
 	public Map del(String id) {
-		UnitInfo visitUnit = (UnitInfo) commonService.get(UnitInfo.class, id);
-
-		if (visitUnit == null) {
-			return this.buidMessageMap("该服务单位信息不存在!", "1");
-		} else {
-			try {
-				commonService.delete(visitUnit);
-			} catch (Exception e) {
-				return this.buidMessageMap("保存失败了", "1");
-			}
-			return this.buidMessageMap("服务单位【"+visitUnit.getUiName()+"】信息删除成功!",	"0");
+		try {
+			unitService.deleUnit(Integer.parseInt(id));
+		} catch (BusinessException e) {
+			return this.buidMessageMap(e.getMessage(),"1");
+		} catch (Exception e) {
+			return this.buidMessageMap("保存失败了", "1");
 		}
+		return this.buidMessageMap("服务单位信息删除成功!", "0");
 	}
 
 	/**
@@ -115,26 +130,43 @@ public class UnitController extends CommonController {
 	 */
 	@RequestMapping(params = "save")
 	@ResponseBody
-	public Map save(UnitInfo visitUnit, String operationType) {
+	public Map save(UnitInfo unitInfo, String operationType) {
 		String msg = operationType.equals("edit") ? "修改" : "新增";
 		try {
 			if (operationType.equals("edit")) {
-				String message = "";
-				UnitInfo r = (UnitInfo) commonService.get(UnitInfo.class, visitUnit.getId());
-				
-				if (r == null) {
-					return this.buidMessageMap("该服务单位信息不存在!", "1");
-				} else {
-					commonService.updateEntitie(visitUnit);
-				}
+				unitService.updateUnit(unitInfo);
 			} else {
-				commonService.save(visitUnit);
+				unitService.addUnit(unitInfo);
 			}
+		} catch (BusinessException e) {
+			return this.buidMessageMap(e.getMessage(), "1");
 		} catch (Exception e) {
+			e.printStackTrace();
 			return this.buidMessageMap(msg + "服务单位失败", "1");
 		}
 
 		return this.buidMessageMap(msg + "服务单位成功", "0");
 	}
-	
+
+	/**
+	 * 修改记录状态
+	 * 
+	 * @param id
+	 * @param status
+	 * @return
+	 */
+	@RequestMapping(params = "updateStatus", method = RequestMethod.POST)
+	@ResponseBody
+	public Map updateStatus(Integer id, String status) {
+		try {
+			unitService.updateStatus(id, status);
+		} catch (BusinessException e) {
+			return this.buidMessageMap(e.getMessage(), "1");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.buidMessageMap("修改记录状态失败", "1");
+		}
+		return this.buidMessageMap("修改记录操作成功!", "0");
+	}
+
 }

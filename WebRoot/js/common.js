@@ -84,20 +84,25 @@
 	 * @param url
 	 * @param formname
 	 */
-	ajaxSubmit : function(url,data) {
+	ajaxSubmit : function(url,data,callback) {
+		MaskUtil.mask();
 		$.ajax({
 			type : 'POST',
 			dataType : 'json',
 			data: data,
 			url : url,
 			error : function() {
+				MaskUtil.unmask();
 				$.miaxisTools.alert('操作失败!'); 
 			},
 			success : function(data) {
+				MaskUtil.unmask();
 				if(data.result==0){
 					if(data.message==''){
+						callback();
 						$.miaxisTools.alert('操作成功!');
 					}else{
+						callback();
 						$.miaxisTools.alert(data.message);
 					}
 				}else{
@@ -115,15 +120,18 @@
 	ajaxSubmitForm : function(url, formName,data) {
 		var isValid = $('#' + formName).form('validate');
 		if (isValid) {
+			MaskUtil.mask(); 
 			var options = {
 				type : 'POST',
 				dataType : 'json',
 				data: data,
 				url : url,
 				error : function() {
+					MaskUtil.unmask();
 					$.miaxisTools.alert('操作失败!'); 
 				},
 				success : function(data) {
+					MaskUtil.unmask();
 					if(data.result==0){
 						if(data.message==''){
 							$.miaxisTools.alert('操作成功!');
@@ -147,15 +155,18 @@
 	ajaxSubmitFormInFile : function(url, formName,data) {
 		var isValid = $('#' + formName).form('validate');
 		if (isValid) {
+			MaskUtil.mask(); 
 			var options = {
 				type : 'POST',
 				dataType : 'text',
 				data: data,
 				url : url,
 				error : function() {
+					MaskUtil.unmask();
 					$.miaxisTools.alert('操作失败!'); 
 				},
 				success : function(data) {
+					MaskUtil.unmask();
 					if(data=="0"){
 						$.miaxisTools.alert('操作成功!');
 					}else{
@@ -233,3 +244,47 @@ function showStudentAbout2(id){
 	    cancelVal:'关闭'
 	});
 }
+
+/**
+ * 使用方法:
+ * 开启:MaskUtil.mask();
+ * 关闭:MaskUtil.unmask();
+ * 
+ * MaskUtil.mask('其它提示文字...');
+ */
+var MaskUtil = (function(){
+	
+	var $mask,$maskMsg;
+	
+	var defMsg = '正在处理，请稍待。。。';
+	
+	function init(){
+		if(!$mask){
+			$mask = $("<div class=\"datagrid-mask mymask\"></div>").appendTo("body");
+		}
+		if(!$maskMsg){
+			$maskMsg = $("<div class=\"datagrid-mask-msg mymask\">"+defMsg+"</div>")
+				.appendTo("body").css({'font-size':'12px'});
+		}
+		
+		$mask.css({width:"100%",height:$(document).height()});
+		
+		$maskMsg.css({
+			left:($(document.body).outerWidth(true) - 190) / 2,top:($(window).height() - 45) / 2
+		}); 
+				
+	}
+	
+	return {
+		mask:function(msg){
+			init();
+			$mask.show();
+			$maskMsg.html(msg||defMsg).show();
+		}
+		,unmask:function(){
+			$mask.hide();
+			$maskMsg.hide();
+		}
+	}
+	
+}());

@@ -1,13 +1,23 @@
 package com.miaxis.visit.entity;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import com.miaxis.common.util.CodeNameEnum;
+import com.miaxis.visit.entity.BankInfo.Status;
 
 /**
  * 服务人员信息
@@ -57,11 +67,11 @@ public class PersonInfo implements java.io.Serializable {
 	/**
 	 * 联系手机
 	 */
-	private Integer piMobile;
+	private String piMobile;
 	/**
 	 * 工作单位
 	 */
-	private String piWorkUnit;
+	private Integer piWorkUnit;
 	/**
 	 * 职务
 	 */
@@ -79,11 +89,17 @@ public class PersonInfo implements java.io.Serializable {
 	 */
 	private Date piOperateTime;
 	/**
-	 * 人员状态 0 正常 9 注销
+	 * 人员状态 1正常 9 注销
 	 */
 	private String piStatus;
+	
+	/**
+	 * 所属单位
+	 */
+	private UnitInfo unitInfo;
 
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "ID", unique = true, nullable = false)
 	public Integer getId() {
 		return this.id;
@@ -166,23 +182,14 @@ public class PersonInfo implements java.io.Serializable {
 	}
 
 	@Column(name = "PI_MOBILE")
-	public Integer getPiMobile() {
+	public String getPiMobile() {
 		return this.piMobile;
 	}
 
-	public void setPiMobile(Integer piMobile) {
+	public void setPiMobile(String piMobile) {
 		this.piMobile = piMobile;
 	}
-
-	@Column(name = "PI_WORK_UNIT", length = 100)
-	public String getPiWorkUnit() {
-		return this.piWorkUnit;
-	}
-
-	public void setPiWorkUnit(String piWorkUnit) {
-		this.piWorkUnit = piWorkUnit;
-	}
-
+	
 	@Column(name = "PI_POST", length = 100)
 	public String getPiPost() {
 		return this.piPost;
@@ -211,7 +218,7 @@ public class PersonInfo implements java.io.Serializable {
 		this.piOperator = piOperator;
 	}
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "PI_OPERATE_TIME", length = 0)
 	public Date getPiOperateTime() {
 		return this.piOperateTime;
@@ -229,5 +236,46 @@ public class PersonInfo implements java.io.Serializable {
 	public void setPiStatus(String piStatus) {
 		this.piStatus = piStatus;
 	}
+	
+	@Transient
+	public Integer getPiWorkUnit() {
+		if(this.unitInfo==null){
+			return this.piWorkUnit;
+		}else{
+			return this.unitInfo.getId();
+		}
+	}
 
+	public void setPiWorkUnit(Integer piWorkUnit) {
+		this.piWorkUnit = piWorkUnit;
+	}
+	
+	@OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "PI_WORK_UNIT")
+	public UnitInfo getUnitInfo() {
+		return unitInfo;
+	}
+
+	public void setUnitInfo(UnitInfo unitInfo) {
+		this.unitInfo = unitInfo;
+	}
+	
+	
+	/**
+	 * 记录状态
+	 * @author liu.qiao
+	 *
+	 */
+	public static class Status extends CodeNameEnum<String> {
+		public static Status NORMAL = new Status("1", "正常");
+		public static Status CANCEL = new Status("9", "注销");
+
+		public static Status[] values() {
+			return new Status[] { NORMAL, CANCEL };
+		}
+
+		public Status(String code, String name) {
+			super(code, name);
+		}
+	}
 }

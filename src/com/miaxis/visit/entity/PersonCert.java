@@ -19,10 +19,6 @@ public class PersonCert implements java.io.Serializable {
 	 */
 	private Integer id;
 	/**
-	 * 人员ID
-	 */
-	private Integer pcPersonId;
-	/**
 	 * 证件数据
 	 */
 	private String pcCert;
@@ -36,15 +32,6 @@ public class PersonCert implements java.io.Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	@Column(name = "PC_PERSON_ID")
-	public Integer getPcPersonId() {
-		return this.pcPersonId;
-	}
-
-	public void setPcPersonId(Integer pcPersonId) {
-		this.pcPersonId = pcPersonId;
 	}
 
 	@Column(name = "PC_CERT", length = 16777215)

@@ -1,12 +1,19 @@
 package com.miaxis.visit.entity;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.miaxis.common.util.CodeNameEnum;
+import com.miaxis.visit.entity.UnitInfo.Status;
 
 /**
  * 服务单位合同信息
@@ -49,14 +56,16 @@ public class UnitPact implements java.io.Serializable {
 	 */
 	private Date upOperateTime;
 	/**
-	 * 状态 0 正常 9 注销
+	 * 状态 0录入  1 正常 9 注销
 	 */
 	private String upStatus;
 	/**
 	 * 备注
 	 */
 	private String upMemo;
+	
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "ID", unique = true, nullable = false)
 	public Integer getId() {
 		return this.id;
@@ -148,6 +157,25 @@ public class UnitPact implements java.io.Serializable {
 
 	public void setUpMemo(String upMemo) {
 		this.upMemo = upMemo;
+	}
+	
+	/**
+	 * 记录状态
+	 * @author liu.qiao
+	 *
+	 */
+	public static class Status extends CodeNameEnum<String> {
+		public static Status INPUT = new Status("0", "录入");
+		public static Status NORMAL = new Status("1", "正常");
+		public static Status CANCEL = new Status("9", "注销");
+
+		public static Status[] values() {
+			return new Status[] { NORMAL, CANCEL };
+		}
+
+		public Status(String code, String name) {
+			super(code, name);
+		}
 	}
 
 }
