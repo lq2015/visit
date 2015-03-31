@@ -92,9 +92,9 @@
 	
 	function formatPersonType(val,row){  
 		if(val=='1'){
-	 		return "培训机构";
+	 		return "总部部门";
 		}else if(val=='2'){
-	 		return "管理部门";
+	 		return "支行网点";
 	 	}else if(val=='3'){
 	 		return "运维机构";
 	 	}

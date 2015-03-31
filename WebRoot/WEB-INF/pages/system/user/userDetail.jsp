@@ -15,8 +15,8 @@
 					<td colspan="3">	
 						<select class="easyui-combobox"  name="persontype"  id="persontype" style="width:422px;"
 								 data-options="panelHeight:'auto',required:true">
-								<option value="1">培训机构</option>
-								<option value="2">管理部门</option>
+								<option value="1">总部部门</option>
+								<option value="2">支行网点</option>
 								<option value="3">运维机构</option>
 							</select>
 					</td>
@@ -25,8 +25,8 @@
 					<th>
 						所属部门:					</th>
 					<td colspan="3">
-						<input class="easyui-combotree" id="departmant" name="departmant" 
-						data-options="method:'get',panelHeight:150,editable:false" style="width:422px;">					</td>
+						<input class="easyui-combobox" id="departmant" name="departmant" 
+						data-options="valueField:'id',textField:'name',panelHeight:'auto',editable:true" style="width:422px;">					</td>
 				</tr>
 				<tr>
 					<th>
@@ -82,7 +82,7 @@
 		$("#btn_sub").click(function() {
 			var persontype = $('#persontype').combo('getValue');
 			if(persontype!="3"){
-				var departmant = $('#departmant').combotree('getValue');
+				var departmant = $('#departmant').combobox('getValue');
 				if(departmant==''){
 					$.miaxisTools.alert('请选择所属部门!');
 					return false;
@@ -101,7 +101,7 @@
 			}
 			
 			if('${user.departmant}'!=''){
-	        	$('#departmant').combotree('setValue', '${user.departmant}');
+	        	$('#departmant').combobox('setValue', '${user.departmant}');
 	        }
 			var persontype = $('#persontype').combo('getValue');
 			if(persontype!='3'){
@@ -119,27 +119,15 @@
 			$("#roleNames").val('');
 		}
 		
-		$('#departmant').combotree({
-			onSelect : function(record) {
-				var persontype = $('#persontype').combo('getValue');
-				if(persontype=='1'){
-					if (record.id.length < 8) {
-						$('#departmant').combotree('clear');
-						$.miaxisTools.alert("请选择培训机构!");
-						return false;
-					}
-				}
-			}
-		});
 		
 		$('#persontype').combobox({
 			onChange: function(newValue, oldValue){
 				if(newValue=='3' ){
 					$('#departmant').combo('disable');	
-					$('#departmant').combotree('clear');	
+					$('#departmant').combobox('clear');	
 				}else{
 					$('#departmant').combo('enable');
-					$('#departmant').combotree('clear');
+					$('#departmant').combobox('clear');
 					var persontype = $('#persontype').combo('getValue');
 					if(persontype!=''){
 						loadDepartmant(persontype);
@@ -149,8 +137,8 @@
 		});
 		
 		function loadDepartmant(persontype){
-			var url ='public.do?departmantTree&personType='+persontype;
-			$('#departmant').combotree('reload', url);
+			var url ='public.do?userDept&persontype='+persontype;
+			$('#departmant').combobox('reload', url);
 		}
 	</script>
 </body>
