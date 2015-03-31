@@ -3,7 +3,7 @@
 <script type="text/javascript"
 	src="<%=basePath%>/plug-in/jquery/imagePreview.js"></script>
 <body>
-	<div class="easyui-tabs">
+	<div class="easyui-tabs" fit=true>
 		<div title="基本信息" style="padding: 10px">
 		<form id="personDetail_form" method="post" novalidate enctype="multipart/form-data" >
 			<input type="hidden" id="btn_sub">
