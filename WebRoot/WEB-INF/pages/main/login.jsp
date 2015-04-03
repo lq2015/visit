@@ -28,31 +28,33 @@ form input {
 			<table width="100%" height="550" border="0" cellspacing="0">
 				<tr>
 					<td style="background:url('images/login_1.jpg')">&nbsp;</td>
-					<td style="background:url('images/login.jpg') no-repeat "
-						width="1003" align="center">
-						<table width="250" border="0" style="padding-top:80px">
-							<tr height="40">
-								<td><img src="images/user.png"></td>
-								<td>用户:</td>
-								<td><input class="easyui-textbox" id="loginName"
-									name="loginName" value="admin" 
-									data-options="required:true,iconCls:'icon-node'" missingMessage="用户名不能为空"/></td>
-							</tr>
-							<tr height="40">
-								<td><img src="images/pwd.png"></td>
-								<td>密码:</td>
-								<td><input class="easyui-validatebox" id="loginPassword"
-									type="password" name="loginPassword" value="123456"
-									data-options="required:true" missingMessage="密码不能为空"/></td>
-							</tr>
-							<tr height="60">
-								<td>&nbsp;</td>
-								<td>&nbsp;</td>
-								<td><INPUT
-									style="background:url('images/login_button.png') no-repeat ;BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px;width:161px;height:36px;cursor:hand"
-									id="submitBtn" type=button></td>
-							</tr>
-						</table>
+					<td style="background:url('images/login.jpg') no-repeat ;"
+						width="1003">
+						<div style="padding-left:380px;padding-top:80px;">
+							<table width="280" border="0" style="">
+								<tr height="40">
+									<td><img src="images/user.png"></td>
+									<td width="40px">用户:</td>
+									<td><input class="easyui-textbox" id="loginName"
+										name="loginName" value="admin" 
+										data-options="required:true,iconCls:'icon-node'" missingMessage="用户名不能为空"/></td>
+								</tr>
+								<tr height="40">
+									<td><img src="images/pwd.png"></td>
+									<td>密码:</td>
+									<td><input class="easyui-validatebox" id="loginPassword"
+										type="password" name="loginPassword" value="123456"
+										data-options="required:true" missingMessage="密码不能为空"/></td>
+								</tr>
+								<tr height="60">
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td><INPUT
+										style="background:url('images/login_button.png') no-repeat ;BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px;width:161px;height:36px;cursor:hand"
+										id="submitBtn" type=button></td>
+								</tr>
+							</table>
+						</div>
 					</td>
 					<td style="background:url('images/login_1.jpg')">&nbsp;</td>
 				</tr>

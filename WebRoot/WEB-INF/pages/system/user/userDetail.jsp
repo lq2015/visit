@@ -67,7 +67,7 @@
 					<td colspan="3" >
 						<input type="hidden" id="roleIds" value="${roleIds}" >
 						<input id="roleNames" name="roleNames"  type="text""   style="width:250px;"
-							value="${roleNames}"  readonly="readonly""/> 
+							value="${roleNames}"  readonly="readonly"/> 
 						<a class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-search'"
 								onclick="selectRole();">选择</a>
 						<a class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'"

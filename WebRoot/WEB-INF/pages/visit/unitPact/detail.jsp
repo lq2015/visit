@@ -66,8 +66,8 @@
 							备注:	
 	                    </th>
 						<td colspan="3">
-							<input id="upMemo" name="upMemo" style="width:280px;"
-								class="easyui-validatebox" value="${unitPact.upMemo}" />
+							<textarea id="upMemo" name="upMemo"
+							class="easyui-validatebox" value="${unitPact.upMemo}" style="width: 283px;height:80px"></textarea>
 						</td>		
 					</tr>
 				</table>

@@ -93,13 +93,13 @@
                     </th>
 				</tr>
 				<tr>
-					<td align="center">
-						<div id="preview" style="border:solid 1px #999999;width:80px">
+					<td align="center" >
+						<div id="preview" style="border:solid 1px #999999;width:80px;height:100px">
 							<img id="personPhoto" width=81 height=101 border=0 />
 						</div>
                     </td>
 					<td align="center">
-						<div id="preview2" style="border:solid 1px #999999;width:80px">
+						<div id="preview2" style="border:solid 1px #999999;width:80px;height:100px">
 							<img id="personCert" width=81 height=101 border=0 />
 						</div>
 					</td>

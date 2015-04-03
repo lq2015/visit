@@ -14,7 +14,7 @@
 						</td>
 						<td>
 							<input class="easyui-combobox" id="qPiWorkUnit" name="qPiWorkUnit"  url="person.do?getWorkUnit"
-							 data-options="valueField:'id',textField:'uiName',panelHeight:'auto',editable:true"
+							 data-options="valueField:'id',textField:'uiName',panelHeight:'auto',panelWidth:200,editable:true"
 						     >
 						</td>
 						<td class="tdlabel">
@@ -23,6 +23,17 @@
 						<td>
 							<input class="easyui-validatebox" type="text" 
 								name="qPiName" id="qPiName" />
+						</td>
+						<td class="tdlabel">
+							状态:
+						</td>
+						<td>
+							<select class="easyui-combobox"  name="qPiStatus"  
+								style="width: 100px;" data-options="panelHeight:'auto',editable:false">
+								<option value="">--全部--</option>
+								<option value="0">正常</option>
+								<option value="9">注销</option>
+							</select>	
 						</td>
 						<td class="tdbutton">
 							<a class="easyui-linkbutton" data-options="iconCls:'icon-search'"
@@ -45,7 +56,7 @@
 						<th field="piName" width="30" align="center" sortable="true">
 							人员姓名
 						</th>
-						<th field="piIdnum" width="30" align="center" sortable="true">
+						<th field="piIdnum" width="50" align="center" sortable="true">
 							身份证号
 						</th>
 						<th field="piSex" width="30" align="center" sortable="true">
@@ -60,7 +71,7 @@
 						<th field="piPost" width="30" align="center" sortable="true">
 							职务
 						</th>
-						<th field="piWorkUnit" width="100" align="center" sortable="true">
+						<th field="unitInfo" width="80" align="center" sortable="true" formatter="formatUnitInfo">
 							工作单位
 						</th>
 						<th field="piCrdate" width="30" align="center" sortable="true">
@@ -179,6 +190,14 @@
 			return "正常";
 		} else if (val == '9') {
 			return "注销";
+		}
+	}
+	 
+	function formatUnitInfo(val,row){
+		if(val){
+			return val.uiName;
+		}else{
+			return '';
 		}
 	}
 	 

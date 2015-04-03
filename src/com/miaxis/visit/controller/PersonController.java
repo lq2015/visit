@@ -69,7 +69,7 @@ public class PersonController extends CommonController {
 	 */
 	@RequestMapping(params = "list")
 	@ResponseBody
-	public Map list(String page, String sort, String order, String rows,String qPiWorkUnit,String qPiName) {
+	public Map list(String page, String sort, String order, String rows,String qPiWorkUnit,String qPiName,String qPiStatus) {
 		
 		/**
 		 * 初始化分页对象
@@ -93,6 +93,10 @@ public class PersonController extends CommonController {
 		
 		if (StringUtils.isNotEmpty(qPiName)) {
 			qc.like("piName", qPiName.concat("%"));
+		}
+		
+		if (StringUtils.isNotEmpty(qPiStatus)) {
+			qc.eq("piStatus", qPiStatus);
 		}
 		
 		List list = commonService.getPageList(PersonInfo.class,pageConfig,qc);

@@ -21,7 +21,7 @@
 						</td>
 						<td>
 							<select class="easyui-combobox"  name="qBiStatus"  
-								style="width: 100px;" data-options="panelHeight:'auto'">
+								style="width: 100px;" data-options="panelHeight:'auto',editable:false">
 								<option value="">--全部--</option>
 								<option value="0">录入</option>
 								<option value="1">正常</option>

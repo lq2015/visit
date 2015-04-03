@@ -99,11 +99,13 @@
 				MaskUtil.unmask();
 				if(data.result==0){
 					if(data.message==''){
-						callback();
 						$.miaxisTools.alert('操作成功!');
 					}else{
-						callback();
 						$.miaxisTools.alert(data.message);
+					}
+					
+					if(callback){
+						callback();
 					}
 				}else{
 					$.miaxisTools.alert(data.message);
@@ -117,16 +119,16 @@
 	 * @param url
 	 * @param formname
 	 */
-	ajaxSubmitForm : function(url, formName,data) {
+	ajaxSubmitForm : function(url, formName,params,opts) {
 		var isValid = $('#' + formName).form('validate');
 		if (isValid) {
 			MaskUtil.mask(); 
 			var options = {
 				type : 'POST',
 				dataType : 'json',
-				data: data,
+				data: params,
 				url : url,
-				error : function() {
+				error : function(e) {
 					MaskUtil.unmask();
 					$.miaxisTools.alert('操作失败!'); 
 				},
@@ -137,6 +139,15 @@
 							$.miaxisTools.alert('操作成功!');
 						}else{
 							$.miaxisTools.alert(data.message);
+						}
+						
+						if(opts){
+							if(opts.resetForm){
+								$('#' + formName).resetForm();
+							}
+							if(opts.callback){
+								opts.callback();
+							}
 						}
 					}else{
 						$.miaxisTools.alert(data.message);
