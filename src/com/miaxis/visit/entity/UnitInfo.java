@@ -13,7 +13,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.miaxis.common.util.CodeNameEnum;
-import com.miaxis.visit.entity.PersonInfo.Status;
 
 /**
  * 服务单位信息

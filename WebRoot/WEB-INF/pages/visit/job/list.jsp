@@ -13,7 +13,7 @@
 							服务单位:
 						</td>
 						<td>
-							<input class="easyui-combobox" id="qPiWorkUnit" name="qPiWorkUnit" 
+							<input class="easyui-combobox" id="qJdUnit" name="qJdUnit" 
 							 data-options="valueField:'id',textField:'uiName',panelHeight:'auto',panelWidth:200,url:'person.do?getWorkUnit',editable:true"
 						     >
 						</td>
@@ -21,7 +21,7 @@
 							网点:
 						</td>
 						<td>
-							<input class="easyui-combobox" id="qPiWorkUnit" name="qPiWorkUnit" 
+							<input class="easyui-combobox" id="qJdJobBank" name="qJdJobBank" 
 							 data-options="valueField:'id',textField:'name',panelHeight:'auto',panelWidth:200,url:'public.do?userDept&persontype=2',editable:true" url="public.do?userDept&persontype=2"
 						     >
 						</td>
@@ -41,7 +41,7 @@
 						</td>
 						<td class="tdbutton">
 							<a class="easyui-linkbutton" data-options="iconCls:'icon-search'"
-								onclick="queryjob();">查询</a>
+								onclick="queryJob();">查询</a>
 						</td>
 					</tr>
 				</table>
@@ -315,9 +315,9 @@
 			
 			$.miaxisTools.openPopupWin({
 				id     : 'w_grade',
-				url    : 'jobDispatch.do?grade&id='+row.id,
-				width  : 590,
-				height : 340,
+				url    : 'jobDispatch.do?grade&jobId='+row.id,
+				width  : 650,
+				height : 510,
 				title  : '服务评价',
 				okBtnId : 'btn_sub'
 			});
@@ -351,6 +351,27 @@
 			$.miaxisTools.alert('请选择需要上传维修单的记录!');
 		}
 	}
+	
+	<% //打印%>
+	 function printLetter(){
+		var row = $('#jobDg').datagrid('getSelected');
+		if (row){
+			if (row.jdStatus=='0') {
+				$.miaxisTools.alert('此派工单还没有派过工,不能打印!');
+				return false;
+			}
+			if (row.jdStatus=='9') {
+				$.miaxisTools.alert('此派工单已经取消,不能打印!');
+				return false;
+			}
+			
+			var url='jobDispatch.do?printLetter&id='+row.id
+			var nwin = window.open();
+			nwin.location = url;
+		}else{
+			$.miaxisTools.alert('请选择需要打印的派工单!');
+		} 
+	 }
 	
 	function formatJobStatus(val, row) {
 		if (val == '0') {

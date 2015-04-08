@@ -1,6 +1,7 @@
 package com.miaxis.visit.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -19,9 +20,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.miaxis.common.base.CommonController;
 import com.miaxis.common.exception.BusinessException;
+import com.miaxis.common.util.DateUtil;
 import com.miaxis.common.util.PageConfig;
 import com.miaxis.common.util.QueryCondition;
 import com.miaxis.system.entity.User;
+import com.miaxis.visit.entity.BankInfo;
+import com.miaxis.visit.entity.GradeDetail;
+import com.miaxis.visit.entity.GradeMaster;
 import com.miaxis.visit.entity.JobDispatch;
 import com.miaxis.visit.entity.PersonInfo;
 import com.miaxis.visit.entity.UnitInfo;
@@ -63,7 +68,7 @@ public class JobDispatchController extends CommonController {
 	@RequestMapping(params = "list")
 	@ResponseBody
 	public Map list(String page, String sort, String order, String rows,
-			String qPiWorkUnit, String qPiName) {
+			String qJdJobBank, String qJdUnit ,String qJdStatus) {
 
 		/**
 		 * 初始化分页对象
@@ -81,16 +86,18 @@ public class JobDispatchController extends CommonController {
 		}
 		qc.asc("id");
 
-		if (StringUtils.isNotEmpty(qPiWorkUnit)) {
-			qc.eq("unitInfo.id", Integer.parseInt(qPiWorkUnit));
+		if (StringUtils.isNotEmpty(qJdUnit)) {
+			qc.eq("unitInfo.id", Integer.parseInt(qJdUnit));
+		}
+		if (StringUtils.isNotEmpty(qJdJobBank)) {
+			qc.eq("bankInfo.id", qJdJobBank);
 		}
 
-		if (StringUtils.isNotEmpty(qPiName)) {
-			qc.like("piName", qPiName.concat("%"));
+		if (StringUtils.isNotEmpty(qJdStatus)) {
+			qc.eq("jdStatus", qJdStatus);
 		}
 
-		List list = commonService
-				.getPageList(JobDispatch.class, pageConfig, qc);
+		List list = commonService.getPageList(JobDispatch.class, pageConfig, qc);
 		return this.buidResultMap(list, list.size());
 	}
 
@@ -185,7 +192,7 @@ public class JobDispatchController extends CommonController {
 		}
 		return this.buidMessageMap("修改记录操作成功!", "0");
 	}
-	
+
 	/**
 	 * 派工
 	 * 
@@ -205,7 +212,7 @@ public class JobDispatchController extends CommonController {
 		}
 		return this.buidMessageMap("派工成功!", "0");
 	}
-	
+
 	/**
 	 * 签到
 	 * 
@@ -218,7 +225,7 @@ public class JobDispatchController extends CommonController {
 		mav.getModelMap().put("id", id);
 		return mav;
 	}
-	
+
 	/**
 	 * 签到提交
 	 * 
@@ -238,7 +245,7 @@ public class JobDispatchController extends CommonController {
 		}
 		return this.buidMessageMap("签到成功!", "0");
 	}
-	
+
 	/**
 	 * 签离
 	 * 
@@ -258,19 +265,91 @@ public class JobDispatchController extends CommonController {
 		}
 		return this.buidMessageMap("签离成功!", "0");
 	}
-	
+
 	/**
 	 * 评价
+	 * 
 	 * @param id
 	 * @return
 	 */
 	@RequestMapping(params = "grade")
-	public ModelAndView grade(Integer id) {
+	public ModelAndView grade(String jobId) {
+		List<GradeDetail> list = null;
+		GradeMaster gradeMaster = null;
+		String masterId ="";
+		String describe = "";
+		String suggest = "";
+		Integer score =null ;
+		Integer s1=null,s2=null,s3=null,s4=null,s5=null,s6=null,s7=null,s8=null,s9=null,s10=null;
+		
+		if(jobId==null) jobId="";
+		if(!jobId.equals("")){
+			List<GradeMaster> masterList = commonService.getListByHql(GradeMaster.class, "from GradeMaster where gmJobId="+jobId);
+			if(masterList.size()>0){
+				gradeMaster = masterList.get(0);
+			}
+			if(gradeMaster!=null){
+				masterId = gradeMaster.getId().toString();
+				describe = gradeMaster.getGmDescribe();
+				suggest = gradeMaster.getGmSuggest();
+				score = gradeMaster.getGmScore();
+				
+				list = commonService.getListByHql(GradeDetail.class, "from GradeDetail where gdMasterId="+masterId);
+				
+				for(GradeDetail gradeDetail:list){
+					if(gradeDetail.getGdGradeItem().equals("s1")){
+						s1 = gradeDetail.getGdScore();
+					}
+					if(gradeDetail.getGdGradeItem().equals("s2")){
+						s2 = gradeDetail.getGdScore();
+					}
+					if(gradeDetail.getGdGradeItem().equals("s3")){
+						s3 = gradeDetail.getGdScore();
+					}
+					if(gradeDetail.getGdGradeItem().equals("s4")){
+						s4 = gradeDetail.getGdScore();
+					}
+					if(gradeDetail.getGdGradeItem().equals("s5")){
+						s5 = gradeDetail.getGdScore();
+					}
+					if(gradeDetail.getGdGradeItem().equals("s6")){
+						s6 = gradeDetail.getGdScore();
+					}
+					if(gradeDetail.getGdGradeItem().equals("s7")){
+						s7 = gradeDetail.getGdScore();
+					}
+					if(gradeDetail.getGdGradeItem().equals("s8")){
+						s8 = gradeDetail.getGdScore();
+					}
+					if(gradeDetail.getGdGradeItem().equals("s9")){
+						s9 = gradeDetail.getGdScore();
+					}
+					if(gradeDetail.getGdGradeItem().equals("s10")){
+						s10 = gradeDetail.getGdScore();
+					}
+				}
+			}
+		}
+		
 		ModelAndView mav = this.getModelMainMav("WEB-INF/pages/visit/job/grade");
-		mav.getModelMap().put("id", id);
+		mav.getModelMap().put("masterId", masterId);
+		mav.getModelMap().put("jobId", jobId);
+		mav.getModelMap().put("s1", s1);
+		mav.getModelMap().put("s2", s2);
+		mav.getModelMap().put("s3", s3);
+		mav.getModelMap().put("s4", s4);
+		mav.getModelMap().put("s5", s5);
+		mav.getModelMap().put("s6", s6);
+		mav.getModelMap().put("s7", s7);
+		mav.getModelMap().put("s8", s8);
+		mav.getModelMap().put("s9", s9);
+		mav.getModelMap().put("s10", s10);
+		mav.getModelMap().put("score", score);
+		mav.getModelMap().put("describe", describe);
+		mav.getModelMap().put("suggest",suggest);
 		return mav;
 	}
-	
+
 	/**
 	 * 评价提交
 	 * 
@@ -279,9 +358,24 @@ public class JobDispatchController extends CommonController {
 	 */
 	@RequestMapping(params = "gradeSubmit", method = RequestMethod.POST)
 	@ResponseBody
-	public Map gradeSubmit(Integer id) {
+	public Map gradeSubmit(HttpServletRequest request) {
+		Integer jobId = Integer.parseInt(request.getParameter("jobId"));
+		String s1 = request.getParameter("s1");
+		String s2 = request.getParameter("s2");
+		String s3 = request.getParameter("s3");
+		String s4 = request.getParameter("s4");
+		String s5 = request.getParameter("s5");
+		String s6 = request.getParameter("s6");
+		String s7 = request.getParameter("s7");
+		String s8 = request.getParameter("s8");
+		String s9 = request.getParameter("s9");
+		String s10 = request.getParameter("s10");
+		String describe = request.getParameter("describe");
+		String suggest = request.getParameter("suggest");
+
 		try {
-			jobDispatchService.gradeSubmit(id);
+			jobDispatchService.gradeSubmit(jobId, s1, s2, s3, s4, s5, s6, s7,
+					s8, s9, s10, describe, suggest);
 		} catch (BusinessException e) {
 			return this.buidMessageMap(e.getMessage(), "1");
 		} catch (Exception e) {
@@ -290,30 +384,84 @@ public class JobDispatchController extends CommonController {
 		}
 		return this.buidMessageMap("评价提交成功!", "0");
 	}
-	
+
 	/**
 	 * 上传维修单
+	 * 
 	 * @param id
 	 * @return
 	 */
 	@RequestMapping(params = "upload")
 	public ModelAndView upload(Integer id) {
-		ModelAndView mav = this.getModelMainMav("WEB-INF/pages/visit/job/upload");
+		ModelAndView mav = this
+				.getModelMainMav("WEB-INF/pages/visit/job/upload");
 		mav.getModelMap().put("id", id);
 		return mav;
 	}
-	
+
 	/**
-	 * 保存
+	 * 提交维修单保存
 	 * 
 	 * @param id
 	 * @return
 	 */
 	@RequestMapping(params = "uploadFiles")
 	@ResponseBody
-	public Map uploadFiles(@RequestParam(value = "files", required = false) MultipartFile[] files ,
+	public Map uploadFiles(
+			@RequestParam(value = "files", required = false) MultipartFile[] files,
 			PersonInfo personInfo, HttpServletRequest request) {
 		return null;
+	}
+
+	/**
+	 * 打印介绍信
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(params = "printLetter")
+	public ModelAndView printLetter(Integer id) {
+		String personName = "";
+		String personIdnum = "";
+		String jobBank = "";
+		Integer personNum = null;
+		String jobDate = "";
+		String jobContent = "";
+
+		JobDispatch job = commonService.get(JobDispatch.class, id);
+		if (job != null) {
+			String ids = job.getJdPersonIds();
+			personNum = ids.split(",").length;
+			if (personNum > 0) {
+				String personId = ids.split(",")[0];
+				PersonInfo person = commonService.get(PersonInfo.class,
+						Integer.parseInt(personId));
+				if (person != null) {
+					personIdnum = person.getPiIdnum();
+					personName = person.getPiName();
+				}
+			}
+
+			BankInfo bank = job.getBankInfo();
+			if (bank != null) {
+				jobBank = bank.getBiName();
+			}
+
+			jobDate = DateUtil.getYYYYMMDD_CN(new Date());
+			jobContent = job.getJdJobContent();
+		}
+
+		ModelAndView mav = this
+				.getModelMainMav("WEB-INF/pages/visit/job/printLetter");
+		mav.getModelMap().put("id", id);
+		mav.getModelMap().put("personName", personName);
+		mav.getModelMap().put("personIdnum", personIdnum);
+		mav.getModelMap().put("personNum", personNum);
+		mav.getModelMap().put("jobBank", jobBank);
+		mav.getModelMap().put("jobContent", jobContent);
+		mav.getModelMap().put("jobDate", jobDate);
+
+		return mav;
 	}
 
 	/**
@@ -338,15 +486,17 @@ public class JobDispatchController extends CommonController {
 
 		return resultList;
 	}
-	
+
 	/**
 	 * 选择人员
+	 * 
 	 * @param unit
 	 * @return
 	 */
 	@RequestMapping(params = "selectPerson")
 	public ModelAndView selectPerson(Integer unitId) {
-		ModelAndView mav = this.getModelMainMav("WEB-INF/pages/visit/job/selectPerson");
+		ModelAndView mav = this
+				.getModelMainMav("WEB-INF/pages/visit/job/selectPerson");
 		mav.getModelMap().put("unitId", unitId);
 		return mav;
 	}

@@ -30,7 +30,7 @@ public class GradeMaster implements java.io.Serializable {
 	/**
 	 * 被服务网点ID
 	 */
-	private String gmJobUnit;
+	private String gmJobBank;
 	/**
 	 * 服务单位ID
 	 */
@@ -85,13 +85,13 @@ public class GradeMaster implements java.io.Serializable {
 		this.gmJobId = gmJobId;
 	}
 
-	@Column(name = "GM_JOB_UNIT", nullable = false, length = 32)
-	public String getGmJobUnit() {
-		return this.gmJobUnit;
+	@Column(name = "GM_JOB_BANK", nullable = false, length = 32)
+	public String getGmJobBank() {
+		return this.gmJobBank;
 	}
 
-	public void setGmJobUnit(String gmJobUnit) {
-		this.gmJobUnit = gmJobUnit;
+	public void setGmJobBank(String gmJobBank) {
+		this.gmJobBank = gmJobBank;
 	}
 
 	@Column(name = "GM_UNIT", nullable = false)
