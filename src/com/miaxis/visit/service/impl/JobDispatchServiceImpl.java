@@ -13,6 +13,7 @@ import com.miaxis.system.entity.User;
 import com.miaxis.visit.entity.BankInfo;
 import com.miaxis.visit.entity.GradeDetail;
 import com.miaxis.visit.entity.GradeMaster;
+import com.miaxis.visit.entity.JobApply;
 import com.miaxis.visit.entity.JobDispatch;
 import com.miaxis.visit.entity.UnitInfo;
 import com.miaxis.visit.service.JobDispatchService;
@@ -22,13 +23,13 @@ public class JobDispatchServiceImpl extends CommonServiceImpl implements
 		JobDispatchService {
 
 	@Override
-	public void addJobDispatch(JobDispatch jobDispatch) {
+	public void addJobDispatch(JobDispatch jobDispatch,String applyId) {
 		HttpServletRequest request = ContextHolderUtils.getRequest();
 		User user = (User) request.getSession().getAttribute("userSession");
 
 		UnitInfo unitInfo = this.commonDao.get(UnitInfo.class,
 				jobDispatch.getJdUnit());
-		jobDispatch.setUnitInfo(unitInfo);
+		jobDispatch.setUnit(unitInfo);
 
 		BankInfo bankInfo = this.commonDao.get(BankInfo.class,
 				jobDispatch.getJdJobBank());
@@ -39,7 +40,22 @@ public class JobDispatchServiceImpl extends CommonServiceImpl implements
 
 		jobDispatch.setJdStatus(JobDispatch.Status.INPUT.getCode());
 		jobDispatch.setJdIsSms(JobDispatch.IsSms.NO.getCode());
-		this.commonDao.save(jobDispatch);
+		Integer jobId = (Integer)this.commonDao.save(jobDispatch);
+		
+		/*****************************************************************
+		 * 如果是派工是从服务申请派工，则更新申请单信息
+		 ******************************************************************/
+		if(applyId==null) applyId="";
+		if(!applyId.equals("")){
+			JobApply jobApply = this.commonDao.get(JobApply.class, Integer.parseInt(applyId));
+			if(jobApply!=null){
+				jobApply.setJaJobId(jobId);
+				jobApply.setApproveUser(user);
+				jobApply.setJaApproveTime(new Date());
+				jobApply.setJaStatus(JobApply.Status.DISPATCH.getCode());
+				this.commonDao.updateEntitie(jobApply);
+			}
+		}
 	}
 
 	@Override
@@ -55,7 +71,7 @@ public class JobDispatchServiceImpl extends CommonServiceImpl implements
 
 		UnitInfo unitInfo = this.commonDao.get(UnitInfo.class,
 				jobDispatch.getJdUnit());
-		jobDispatch.setUnitInfo(unitInfo);
+		jobDispatch.setUnit(unitInfo);
 
 		BankInfo bankInfo = this.commonDao.get(BankInfo.class,
 				jobDispatch.getJdJobBank());
@@ -105,6 +121,7 @@ public class JobDispatchServiceImpl extends CommonServiceImpl implements
 		if (job == null) {
 			throw new BusinessException("需要签到的派工单记录不存在。");
 		}
+		job.setJdSignTime(new Date());
 		job.setJdStatus(JobDispatch.Status.SIGN.getCode());
 		this.commonDao.updateEntitie(job);
 	}
@@ -115,6 +132,7 @@ public class JobDispatchServiceImpl extends CommonServiceImpl implements
 		if (job == null) {
 			throw new BusinessException("需要签离的派工单记录不存在。");
 		}
+		job.setJdOutTime(new Date());
 		job.setJdStatus(JobDispatch.Status.OUT.getCode());
 		this.commonDao.updateEntitie(job);
 	}

@@ -103,7 +103,7 @@ public class JobDispatch implements java.io.Serializable {
 	/**
 	 * 服务单位
 	 */
-	private UnitInfo unitInfo;
+	private UnitInfo unit;
 	
 	/**
 	 * 银行网点
@@ -140,8 +140,8 @@ public class JobDispatch implements java.io.Serializable {
 	
 	@Transient
 	public Integer getJdUnit() {
-		if(this.unitInfo!=null){
-			return this.unitInfo.getId();
+		if(this.unit!=null){
+			return this.unit.getId();
 		}else{
 			return this.jdUnit;
 		}
@@ -285,12 +285,12 @@ public class JobDispatch implements java.io.Serializable {
 	
 	@OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "JD_UNIT")
-	public UnitInfo getUnitInfo() {
-		return unitInfo;
+	public UnitInfo getUnit() {
+		return unit;
 	}
 
-	public void setUnitInfo(UnitInfo unitInfo) {
-		this.unitInfo = unitInfo;
+	public void setUnit(UnitInfo unit) {
+		this.unit = unit;
 	}
 	
 	

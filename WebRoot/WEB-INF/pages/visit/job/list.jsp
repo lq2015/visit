@@ -57,7 +57,7 @@
 						<th field="bankInfo" width="100" align="center" sortable="true" formatter="formatBankInfo">
 							网点
 						</th>
-						<th field="unitInfo" width="160" align="center" sortable="true" formatter="formatUnitInfo">
+						<th field="unit" width="160" align="center" sortable="true" formatter="formatUnitInfo">
 							服务单位
 						</th>
 						<th field="jdPersonNames" width="100" align="center" sortable="true">

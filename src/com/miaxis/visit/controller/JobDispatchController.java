@@ -87,7 +87,7 @@ public class JobDispatchController extends CommonController {
 		qc.asc("id");
 
 		if (StringUtils.isNotEmpty(qJdUnit)) {
-			qc.eq("unitInfo.id", Integer.parseInt(qJdUnit));
+			qc.eq("unit.id", Integer.parseInt(qJdUnit));
 		}
 		if (StringUtils.isNotEmpty(qJdJobBank)) {
 			qc.eq("bankInfo.id", qJdJobBank);
@@ -155,12 +155,17 @@ public class JobDispatchController extends CommonController {
 	public Map save(JobDispatch jobDispatch, HttpServletRequest request) {
 		String operationType = request.getParameter("operationType");
 		String msg = operationType.equals("edit") ? "修改" : "新增";
+		
+		/****************************************************
+		 * applyId 值从服务申请时派工
+		 ***************************************************/
+		String applyId = request.getParameter("applyId");
 
 		try {
 			if (operationType.equals("edit")) {
 				jobDispatchService.updateJobDispatch(jobDispatch);
 			} else {
-				jobDispatchService.addJobDispatch(jobDispatch);
+				jobDispatchService.addJobDispatch(jobDispatch,applyId);
 			}
 		} catch (BusinessException e) {
 			return this.buidMessageMap(e.getMessage(), "1");

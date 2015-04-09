@@ -363,7 +363,7 @@ public class QueryCondition {
 		
 		//创建外键表关联
 		for (int i=0;i<aliasList.size();i++) {
-			String name= aliasList.get(0);
+			String name= aliasList.get(i);
 			detachedCriteria.createAlias(name, name);
 		}
 		

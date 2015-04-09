@@ -6,14 +6,19 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.miaxis.common.util.CodeNameEnum;
-import com.miaxis.visit.entity.PersonInfo.Status;
+import com.miaxis.system.entity.User;
 
 /**
  * 派工申请
@@ -31,7 +36,11 @@ public class JobApply implements java.io.Serializable {
 	/**
 	 * 需服务网点ID
 	 */
-	private Integer jaJobUnit;
+	private String jaJobBank;
+	/**
+	 * 服务项目ID
+	 */
+	private String jaServeItemId;
 	/**
 	 * 服务项目
 	 */
@@ -65,13 +74,26 @@ public class JobApply implements java.io.Serializable {
 	 */
 	private Integer jaJobId;
 	/**
-	 * 状态：0录入  1申请 2已派工 9取消
+	 * 状态：0录入  1申请 2已派工 3驳回 9取消
 	 */
 	private String jaStatus;
 	/**
 	 * 备注
 	 */
 	private String jaMemo;
+	
+	/**
+	 * 银行网点
+	 */
+	private BankInfo bankInfo;
+	/**
+	 * 申请用户
+	 */
+	private User applyUser;
+	/**
+	 * 审核用户
+	 */
+	private User approveUser;
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -84,13 +106,26 @@ public class JobApply implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "JA_JOB_UNIT", nullable = false)
-	public Integer getJaJobUnit() {
-		return this.jaJobUnit;
+	@Transient
+	public String getJaJobBank() {
+		if(this.bankInfo!=null){
+			return this.bankInfo.getId();
+		}else{
+			return this.jaJobBank;
+		}
 	}
 
-	public void setJaJobUnit(Integer jaJobUnit) {
-		this.jaJobUnit = jaJobUnit;
+	public void setJaJobBank(String jaJobBank) {
+		this.jaJobBank = jaJobBank;
+	}
+	
+	@Column(name = "JA_SERVE_ITEM_ID", nullable = false, length = 250)
+	public String getJaServeItemId() {
+		return this.jaServeItemId;
+	}
+
+	public void setJaServeItemId(String jaServeItemId) {
+		this.jaServeItemId = jaServeItemId;
 	}
 
 	@Column(name = "JA_SERVE_ITEM", nullable = false, length = 250)
@@ -121,7 +156,7 @@ public class JobApply implements java.io.Serializable {
 		this.jaJobDate = jaJobDate;
 	}
 
-	@Column(name = "JA_APPLY_MAN", length = 32)
+	@Transient
 	public String getJaApplyMan() {
 		return this.jaApplyMan;
 	}
@@ -130,7 +165,7 @@ public class JobApply implements java.io.Serializable {
 		this.jaApplyMan = jaApplyMan;
 	}
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "JA_APPLY_TIME", length = 0)
 	public Date getJaApplyTime() {
 		return this.jaApplyTime;
@@ -140,7 +175,7 @@ public class JobApply implements java.io.Serializable {
 		this.jaApplyTime = jaApplyTime;
 	}
 
-	@Column(name = "JA_APPROVE_MAN", length = 32)
+	@Transient
 	public String getJaApproveMan() {
 		return this.jaApproveMan;
 	}
@@ -149,7 +184,7 @@ public class JobApply implements java.io.Serializable {
 		this.jaApproveMan = jaApproveMan;
 	}
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "JA_APPROVE_TIME", length = 0)
 	public Date getJaApproveTime() {
 		return this.jaApproveTime;
@@ -186,6 +221,37 @@ public class JobApply implements java.io.Serializable {
 		this.jaMemo = jaMemo;
 	}
 	
+	@OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "JA_JOB_BANK")
+	public BankInfo getBankInfo() {
+		return bankInfo;
+	}
+
+	public void setBankInfo(BankInfo bankInfo) {
+		this.bankInfo = bankInfo;
+	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "JA_APPLY_MAN")
+	public User getApplyUser() {
+		return applyUser;
+	}
+
+	public void setApplyUser(User applyUser) {
+		this.applyUser = applyUser;
+	}
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "JA_APPROVE_MAN")
+	public User getApproveUser() {
+		return approveUser;
+	}
+
+	public void setApproveUser(User approveUser) {
+		this.approveUser = approveUser;
+	}
+
+
 	/**
 	 * 记录状态
 	 * @author liu.qiao
@@ -194,6 +260,7 @@ public class JobApply implements java.io.Serializable {
 		public static Status INPUT = new Status("0", "录入");
 		public static Status APPLY = new Status("1", "申请");
 		public static Status DISPATCH = new Status("2", "已派工");
+		public static Status REJECT = new Status("3", "驳回");
 		public static Status CANCEL = new Status("9", "取消");
 
 		public static Status[] values() {

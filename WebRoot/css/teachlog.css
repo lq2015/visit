@@ -1,0 +1,136 @@
+body {
+	margin:0 auto;
+	padding:0;
+	font-size:12px;
+	background:#808080; 
+	margin-top:10px; 
+	margin-bottom:10px;
+	tab-interval:28px;
+	text-justify-trim:punctuation;
+}
+#totalPage {
+	background:white;
+	width:794px;
+	height:1023px;
+	height:auto!important;
+	min-height:1023px;
+	margin-left:auto;
+	margin-right:auto;
+	padding-top:1px;
+	padding-bottom:1px;
+}
+
+#printInfoPage {
+	background:white;
+	width:794px;
+	height:1023px;
+	height:auto!important;
+	min-height:1060px;
+	margin-left:auto;
+	margin-right:auto;
+	padding-top:1px;
+	padding-bottom:1px;
+}
+
+table {
+	border:1px solid #000;
+	margin-bottom:10px
+}
+
+#title {
+	border:0px;
+	padding-top:10px;
+	font-size:26px;
+}
+
+.noBorder {
+	margin:0 auto;
+	border:0px solid #000;
+}
+
+#carType {
+	border:1px solid #333; 
+	height:20px;
+	font-size:12px;
+}
+
+#carType strong {
+	font-size:16px;
+	line-height: 23px;
+}
+
+#carType span {
+	line-height: 23px;
+}
+
+#studentNo {
+	margin-top:0px;
+	text-align:right; 
+	border:0px ;
+}
+
+#studentNo td {
+	border-right:0px; 
+	padding-right:30px
+}
+
+td{ 
+	padding:0 5px;
+}
+
+.b_right {
+	border-right:1px solid #000;
+}
+
+.td_bottom {
+	border-bottom:1px solid #000;
+}
+
+.sign {
+	margin-right:150px;
+}
+
+.date {
+	margin-right:130px;
+}
+
+.nobo {
+	border:0px;
+}
+
+.stage {
+	border-right:1px solid #000; 
+	font-size:18px; 
+	font-family:'ºÚÌå';
+}
+
+.no_stage{
+	border-bottom:1px solid #000;
+	border-right:1px solid #000; 
+	font-size:16px;font-family:'ºÚÌå';
+}
+
+.no_stage span {
+	font-size:14px;
+	margin-top:3px;
+}
+
+.b_bottom {
+	border-bottom:1px solid #000;
+	border-right:1px solid #000;
+}
+
+img {
+	vertical-align:middle;
+}
+.checkRemark{
+	font-size:18px;
+}
+.checkSign{
+	font-size:18px;
+	margin-right:100px;
+}
+.STYLE1 {
+	font-size: 29px;
+	color: #000000;
+}

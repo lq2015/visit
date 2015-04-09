@@ -10,7 +10,7 @@ import com.miaxis.visit.entity.JobDispatch;
  * 
  */
 public interface JobDispatchService extends CommonService {
-	public void addJobDispatch(JobDispatch jobDispatch);
+	public void addJobDispatch(JobDispatch jobDispatch,String applyId);
 
 	public void updateJobDispatch(JobDispatch jobDispatch);
 
@@ -44,7 +44,10 @@ public interface JobDispatchService extends CommonService {
 	 * @param id
 	 */
 	public void outSubmit(Integer id);
-
+	
+	/**
+	 * 上传维修单
+	 */
 	public void uploadFiles();
 
 	/**
