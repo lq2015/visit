@@ -237,6 +237,7 @@ public class JobDispatch implements java.io.Serializable {
 	}
 	
 	@Temporal(TemporalType.TIMESTAMP)
+	@JsonSerialize(using=DateJsonSerializer.class)
 	@Column(name = "JD_SIGN_TIME", length = 0)
 	public Date getJdSignTime() {
 		return this.jdSignTime;
@@ -247,6 +248,7 @@ public class JobDispatch implements java.io.Serializable {
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
+	@JsonSerialize(using=DateJsonSerializer.class)
 	@Column(name = "JD_OUT_TIME", length = 0)
 	public Date getJdOutTime() {
 		return this.jdOutTime;

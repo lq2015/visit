@@ -45,7 +45,7 @@ function previewImage(isIE, file, preview, imghead, width, height) {
 		// //å¾çå¼å¸¸çææï¼é²æ­¢ç¨æ·ä¿®æ¹åç¼æ¥ä¼ªé å¾ç
 		localImagId.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
 		localImagId.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = imgSrc;
-		//imgObjPreview.style.display = 'none';
+		imgObjPreview.style.display = 'none';
 		document.selection.empty();
 
 	} else if (file.files && file.files[0]) {

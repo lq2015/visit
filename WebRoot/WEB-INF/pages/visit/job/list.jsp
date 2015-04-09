@@ -254,7 +254,7 @@
 				return false;
 			}
 			if (',2,3,'.indexOf(row.jdStatus)>0) {
-				$.miaxisTools.alert('此派工单还已经签到过,不能重复签到!');
+				$.miaxisTools.alert('此派工单已经签到过,不能重复签到!');
 				return false;
 			}
 			
@@ -284,7 +284,7 @@
 				return false;
 			}
 			if (',0,1,'.indexOf(row.jdStatus)>0) {
-				$.miaxisTools.alert('此派工单还还没签到过,不能签离!');
+				$.miaxisTools.alert('此派工单还没签到过,不能签离!');
 				return false;
 			}
 			
@@ -309,7 +309,7 @@
 				return false;
 			}
 			if (',0,1,2,'.indexOf(row.jdStatus)>0) {
-				$.miaxisTools.alert('此派工单还还没签离过,不能评价!');
+				$.miaxisTools.alert('此派工单还没签离过,不能评价!');
 				return false;
 			}
 			
@@ -331,11 +331,11 @@
 		if (row){
 			var index = $('#jobDg').datagrid('getRowIndex',row);
 			if (row.jdStatus=='9') {
-				$.miaxisTools.alert('此派工单已经取消,不能上传维修单!');
+				$.miaxisTools.alert('此派工单已经取消,不能上传工作单!');
 				return false;
 			}
 			if (',0,1,2,'.indexOf(row.jdStatus)>0) {
-				$.miaxisTools.alert('此派工单还还没签离过,不能上传维修单!');
+				$.miaxisTools.alert('此派工单还没签离过,不能上传工作单!');
 				return false;
 			}
 			
@@ -344,11 +344,11 @@
 				url    : 'jobDispatch.do?upload&id='+row.id,
 				width  : 590,
 				height : 340,
-				title  : '上传维修单',
+				title  : '上传工作单',
 				okBtnId : 'btn_sub'
 			});
 		}else{
-			$.miaxisTools.alert('请选择需要上传维修单的记录!');
+			$.miaxisTools.alert('请选择需要上传工作单的记录!');
 		}
 	}
 	

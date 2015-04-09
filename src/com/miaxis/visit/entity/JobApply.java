@@ -17,6 +17,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import com.miaxis.common.springmvc.DateJsonSerializer;
 import com.miaxis.common.util.CodeNameEnum;
 import com.miaxis.system.entity.User;
 
@@ -166,6 +169,7 @@ public class JobApply implements java.io.Serializable {
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
+	@JsonSerialize(using=DateJsonSerializer.class)
 	@Column(name = "JA_APPLY_TIME", length = 0)
 	public Date getJaApplyTime() {
 		return this.jaApplyTime;
@@ -185,6 +189,7 @@ public class JobApply implements java.io.Serializable {
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)
+	@JsonSerialize(using=DateJsonSerializer.class)
 	@Column(name = "JA_APPROVE_TIME", length = 0)
 	public Date getJaApproveTime() {
 		return this.jaApproveTime;

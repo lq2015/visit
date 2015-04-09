@@ -1,7 +1,9 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/pages/header.jsp"%>
+<script type="text/javascript" src="<%=basePath%>/js/batchUploadImg.js"></script>
+<script type="text/javascript"
+	src="<%=basePath%>/plug-in/jquery/imagePreview.js"></script>
 <body>
-	<%@ include file="/WEB-INF/pages/batchUploadImg.jsp"%>
 	<div class="easyui-layout" style="width: 100%;" fit="true">
 	    <form id="unitPactDetail_form" method="post" novalidate enctype="multipart/form-data" >
 			<input type="hidden" id="btn_sub" >
@@ -65,7 +67,7 @@
 	                    </th>
 						<td colspan="3">
 							<textarea id="upMemo" name="upMemo"
-							class="easyui-validatebox" value="${unitPact.upMemo}" style="width: 283px;height:160px"></textarea>
+							class="easyui-validatebox" value="${unitPact.upMemo}" style="width: 283px;height:80px"></textarea>
 						</td>		
 					</tr>
 				</table>
@@ -89,7 +91,7 @@
 				<div class="ftitle" >
 					<span>未上传服务合同附件</span>
 				</div>
-				<div id="preview"  >
+				<div id="preview" style="height: 100px;display:none" >
 					<!-- 图片预览区域 -->
 				</div>
 			</div>
@@ -98,11 +100,7 @@
 	</div>
 	
 	<script type="text/javascript">
-	<%--//初始化图片上传控件--%>
-	addAttachment(0);
-	
 	$().ready(function() {
-		
 		loadWorkUnit();
 		setTimeout(function() {
 

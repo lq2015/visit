@@ -104,6 +104,7 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 			sql.append("\n )");
 		}
 		
+		sql.append("\n WHERE ISVALID='1'");
 		sql.append("\n ORDER BY menuLevel,orderNum");
 		List<Menu> list =this.commonDao.getListBySql(Menu.class,sql.toString());
 		return list;
@@ -126,6 +127,7 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 			sql.append("\n 	)");
 		}
 		
+		sql.append("\n AND ISVALID='1'");
 		sql.append("\n ORDER BY funtype,orderNum");
 		List<Function> list =this.commonDao.getListBySql(Function.class,sql.toString());
 		return list;

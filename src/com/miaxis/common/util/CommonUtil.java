@@ -43,8 +43,9 @@ public class CommonUtil<T> {
 	 * @param length
 	 * @return
 	 */
-	public static final String PERSON_PICTURE = "upload/person";
-	public static final String UNIT_PACT = "upload/pact";
+	public static final String PERSON_PICTURE = "upload/person"; //人员照片
+	public static final String UNIT_PACT = "upload/pact";  //合同附件
+	public static final String JOB = "upload/job";  //维修单
 	public static final String UPLOAD_TEMP = "upload/temp";
 
 	// 获取随机数

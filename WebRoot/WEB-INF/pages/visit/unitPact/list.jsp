@@ -85,7 +85,7 @@
 			$.miaxisTools.openPopupWin({
 				url : 'unitPact.do?detail&id=' + row.id,
 				width : 700,
-				height : 300,
+				height : 365,
 				title : '查看服务合同',
 				okBtnId : 'btn_sub'
 			});
@@ -106,19 +106,9 @@
 				$.miaxisTools.openPopupWin({
 					url   : 'unitPact.do?insertOrUpdate&operationType=edit&id=' + row.id,
 					width : 700,
-					height: 300,
+					height: 365,
 					title : '修改服务合同',
-					okBtnId : 'btn_sub',
-					button:[{name: '添加附件',
-						 callback: function(){
-							iframe = this.iframe.contentWindow;
-							$('#btn_upload', iframe.document).click();
-							return false;
-						 },
-						 focus: true,
-						 disabled:false
-						}
-					  ]
+					okBtnId : 'btn_sub'
 				});
 			}
 		} else {
@@ -130,19 +120,9 @@
 		$.miaxisTools.openPopupWin({
 			url    : 'unitPact.do?insertOrUpdate&operationType=insert',
 			width  : 700,
-			height : 300,
+			height : 365,
 			title  : '新增服务合同',
-			okBtnId : 'btn_sub',
-			button:[{name: '添加附件',
-				 callback: function(){
-					iframe = this.iframe.contentWindow;
-					$('#btn_upload', iframe.document).click();
-					return false;
-				 },
-				 focus: true,
-				 disabled:false
-				}
-			  ]
+			okBtnId : 'btn_sub'
 		});
 	}
 	

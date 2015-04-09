@@ -35,11 +35,11 @@ public class UnitPactServiceImpl extends CommonServiceImpl implements UnitPactSe
 			String picUrl = (String)map.get("filePath");
 			String picData = (String)map.get("picData");
 			
-			UnitPactPic UnitPactPic = new UnitPactPic();
-			UnitPactPic.setUpPactId(pactId);
-			UnitPactPic.setUpPic(picData);
-			UnitPactPic.setUpPicUrl(picUrl);
-			this.commonDao.save(UnitPactPic);
+			UnitPactPic unitPactPic = new UnitPactPic();
+			unitPactPic.setUpPactId(pactId);
+			unitPactPic.setUpPic(picData);
+			unitPactPic.setUpPicUrl(picUrl);
+			this.commonDao.save(unitPactPic);
 		}
 	}
 

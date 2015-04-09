@@ -1,5 +1,7 @@
 package com.miaxis.visit.service;
 
+import java.util.List;
+
 import com.miaxis.common.base.service.CommonService;
 import com.miaxis.visit.entity.JobDispatch;
 
@@ -48,7 +50,7 @@ public interface JobDispatchService extends CommonService {
 	/**
 	 * 上传维修单
 	 */
-	public void uploadFiles();
+	public void uploadFiles(List list,Integer jobId);
 
 	/**
 	 * 评价

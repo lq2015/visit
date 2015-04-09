@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.miaxis.common.base.CommonController;
 import com.miaxis.common.exception.BusinessException;
+import com.miaxis.common.util.CommonUtil;
 import com.miaxis.common.util.DateUtil;
 import com.miaxis.common.util.PageConfig;
 import com.miaxis.common.util.QueryCondition;
@@ -27,10 +28,14 @@ import com.miaxis.system.entity.User;
 import com.miaxis.visit.entity.BankInfo;
 import com.miaxis.visit.entity.GradeDetail;
 import com.miaxis.visit.entity.GradeMaster;
+import com.miaxis.visit.entity.JobBillPic;
 import com.miaxis.visit.entity.JobDispatch;
 import com.miaxis.visit.entity.PersonInfo;
 import com.miaxis.visit.entity.UnitInfo;
+import com.miaxis.visit.entity.UnitPact;
+import com.miaxis.visit.entity.UnitPactPic;
 import com.miaxis.visit.service.JobDispatchService;
+import com.miaxis.visit.service.PublicService;
 
 /**
  * 派工单管理
@@ -44,6 +49,8 @@ import com.miaxis.visit.service.JobDispatchService;
 public class JobDispatchController extends CommonController {
 	@Autowired
 	public JobDispatchService jobDispatchService;
+	@Autowired
+	public PublicService publicService;
 
 	/**
 	 * 主页
@@ -398,9 +405,12 @@ public class JobDispatchController extends CommonController {
 	 */
 	@RequestMapping(params = "upload")
 	public ModelAndView upload(Integer id) {
-		ModelAndView mav = this
-				.getModelMainMav("WEB-INF/pages/visit/job/upload");
-		mav.getModelMap().put("id", id);
+		ModelAndView mav = this.getModelMainMav("WEB-INF/pages/visit/job/upload");
+		
+		List<JobBillPic> list = commonService.getListByHql(JobBillPic.class, "from JobBillPic where jbJobId="+id);
+		mav.getModelMap().put("billPicList", list);
+		
+		mav.getModelMap().put("jobId", id);
 		return mav;
 	}
 
@@ -412,10 +422,52 @@ public class JobDispatchController extends CommonController {
 	 */
 	@RequestMapping(params = "uploadFiles")
 	@ResponseBody
-	public Map uploadFiles(
-			@RequestParam(value = "files", required = false) MultipartFile[] files,
-			PersonInfo personInfo, HttpServletRequest request) {
-		return null;
+	public Map uploadFiles(@RequestParam(value = "files", required = false) MultipartFile[] files,
+			HttpServletRequest request) {
+		String jobId = request.getParameter("jobId");
+		try {
+			ArrayList list = new ArrayList();
+			for(int i=0;i<files.length;i++){
+				String fileName = files[i].getOriginalFilename();
+				if(fileName==null) fileName="";
+				if(fileName.equals("")) continue;
+				
+				Map<String, String> map = publicService.uploadPic(files[i], null, 
+						CommonUtil.JOB, false);
+				list.add(map);
+			}
+			
+			jobDispatchService.uploadFiles(list,Integer.parseInt(jobId));
+		} catch (BusinessException e) {
+			return this.buidMessageMap(e.getMessage(), "1");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return this.buidMessageMap("上传维修单失败", "1");
+		}
+
+		return this.buidMessageMap("上传维修单成功", "0");
+	}
+	
+	/**
+	 * 删除
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(params = "delJobPic", method = RequestMethod.POST)
+	@ResponseBody
+	public Map delJobPic(String id) {
+		try {
+			JobBillPic jobBillPic = commonService.get(JobBillPic.class, Integer.parseInt(id));
+			if(jobBillPic==null){
+				return this.buidMessageMap("删除的工作单记录不存在!", "1");
+			}else{
+				commonService.delete(jobBillPic);
+			}
+		} catch (Exception e) {
+			return this.buidMessageMap("保存失败了", "1");
+		}
+		return this.buidMessageMap("工作单信息删除成功!", "0");
 	}
 
 	/**

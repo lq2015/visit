@@ -1,6 +1,8 @@
 package com.miaxis.visit.service.impl;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,8 +16,10 @@ import com.miaxis.visit.entity.BankInfo;
 import com.miaxis.visit.entity.GradeDetail;
 import com.miaxis.visit.entity.GradeMaster;
 import com.miaxis.visit.entity.JobApply;
+import com.miaxis.visit.entity.JobBillPic;
 import com.miaxis.visit.entity.JobDispatch;
 import com.miaxis.visit.entity.UnitInfo;
+import com.miaxis.visit.entity.UnitPactPic;
 import com.miaxis.visit.service.JobDispatchService;
 
 @Service("jobDispatchService")
@@ -138,8 +142,18 @@ public class JobDispatchServiceImpl extends CommonServiceImpl implements
 	}
 
 	@Override
-	public void uploadFiles() {
-
+	public void uploadFiles(List list,Integer jobId) {
+		for(int i=0;i<list.size();i++){
+			Map map = (Map)list.get(i);
+			String picUrl = (String)map.get("filePath");
+			String picData = (String)map.get("picData");
+			
+			JobBillPic jobBillPic = new JobBillPic();
+			jobBillPic.setJbJobId(jobId);
+			jobBillPic.setJbPic(picData);
+			jobBillPic.setJbPicUrl(picUrl);
+			this.commonDao.save(jobBillPic);
+		}
 	}
 
 	@Override
