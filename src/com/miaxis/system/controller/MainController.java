@@ -273,5 +273,20 @@ public class MainController extends CommonController {
 		jsonMap.put("newTime", DateUtil.convert2String(Long.parseLong(newTime), DateUtil.DATE_FORMAT));
 		return jsonMap;
 	}
+	
+	/**
+	 * 下载驱动
+	 * 
+	 * @param user
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(params = "downDrive")
+	public ModelAndView downDrive(HttpServletRequest request,
+			HttpServletResponse response) {
+		ModelAndView mav = this
+				.getModelMainMav("WEB-INF/pages/downDrive");
+		return mav;
+	}
 
 }

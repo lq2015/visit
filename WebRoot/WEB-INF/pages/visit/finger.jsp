@@ -73,5 +73,49 @@
  </div>
 </div>
 <script>
-	
+	var vendorId = "00001";
+	var finger = new Finger(vendorId);
+	<% //点击指纹采集按钮 %>
+	function scanFinger(idx) {
+		//如果控件未加载完成则隔一段时间后再试 
+		//alert(typeof(CommOcx));
+		if(typeof(CommOcx)=="undefined"){
+			setTimeout(scanFinger, 1000);
+			return false;
+		}
+		var resultString = finger.getMB();
+		//var result = $.parseJSON(resultString);
+		<% //失败则取消勾选 %>
+		if (!resultString) {
+			$("input[name='fingerCode']").each(function() {
+				if (this.value == idx ) {
+					this.checked = false;
+				}
+			});
+			return false;
+		}
+		
+		<% //成功则保存模板 %>
+		$("input[name='finger"+idx+"']").val(resultString);
+	}
+
+	<% //为采集指纹的按钮增加事件 %>
+	$("input[name='fingerCode']").each(function() {
+		$(this).click(function(){
+			if(this.checked){
+				if($("input[name='finger"+$(this).val()+"']").val() == ""){
+					/**
+					if($("input[type=checkbox]:checked").size()>2){
+						alertContent('<bean:message key="text.cancelFinger"/>');
+						this.checked = false;
+						return;
+					}
+					*/
+					scanFinger($(this).val());
+				}
+			}else{
+				$("input[name='finger"+$(this).val()+"']").val("");
+			}
+		});
+	});
 </script>

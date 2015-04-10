@@ -342,8 +342,8 @@
 			$.miaxisTools.openPopupWin({
 				id     : 'w_upload',
 				url    : 'jobDispatch.do?upload&id='+row.id,
-				width  : 590,
-				height : 340,
+				width  : 600,
+				height : 350,
 				title  : '上传工作单',
 				okBtnId : 'btn_sub'
 			});

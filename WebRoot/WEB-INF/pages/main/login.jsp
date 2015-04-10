@@ -75,12 +75,12 @@ form input {
 					cancel : true
 				});
 			}
-			var machine = LODOP
+			/*var machine = LODOP
 					.GET_SYSTEM_INFO('NetworkAdapter.1.PhysicalAddress');
 			var hostname = LODOP.GET_SYSTEM_INFO('Printer.SystemName');
 			machine = machine.replace(/-/g, "");
 			$("#machineCode").val(machine);
-			$("#hostname").val(hostname);
+			$("#hostname").val(hostname);*/
 		});
 
 		$("#submitBtn").click(function() {

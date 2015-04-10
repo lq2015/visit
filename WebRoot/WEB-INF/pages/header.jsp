@@ -36,6 +36,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="<%=basePath%>/js/json2.min.js"></script>
 	<script type="text/javascript" src="<%=basePath%>/plug-in/jquery/jquery.form.js"></script>
 	<script type="text/javascript" src="<%=basePath%>/plug-in/jquery/jquery.jqprint-0.3.js"></script>
-	<%@ include file="/WEB-INF/pages/lodopHeader.jsp"%>
+	<%-- <%@ include file="/WEB-INF/pages/lodopHeader.jsp"%> --%>
   </head>
 	

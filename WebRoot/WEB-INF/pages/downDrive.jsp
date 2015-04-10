@@ -57,16 +57,16 @@
     <div class="tit">系统驱动程序说明</div>
     <div class="tit1">使用本系统需要安装以下程序：</div>
     <br/>
-    <div class="tit1">一、中正MR300驱动程序</div>
+    <div class="tit1">一、浙泰设备驱动程序</div>
     <div class="con">
       <div class="cons">
-        &nbsp;&nbsp;&nbsp;&nbsp;此程序是浙江中正自主研发生产,支持读取二代身份证、IC卡和采集指纹数据。 <br /> <a href="<%=basePath%>/download/ocx-fj.rar">点击此处</a>下载中正MR300驱动程序并安装。
+        &nbsp;&nbsp;&nbsp;&nbsp;此程序是浙泰自主研发生产,支持读取二代身份证、采集指纹数据。 <br /> <a href="<%=basePath%>/download/ZTOCX V1.0.0.exe">点击此处</a>下载浙泰设备驱动程序并安装。
       </div>
     </div>
     <div class="tit1">二、 打印控件</div>
     <div class="con">
       <div class="cons">
-        &nbsp;&nbsp;&nbsp;&nbsp;此打印控件，主要是用于打印学员信息。如果您在使用本系统的过程中，发现无法打印学员信息的问题，可能就是因为没有安装此打印控件。正常情况下，如果您未安装此控件，在您使用本系统时浏览器会自动提示安装，但如果您的IE浏览器安全级别设置较高，可能会拦截该提示。为了确保您能够正常使用打印功能，请您手动安装本控件。<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;此打印控件，主要是用于系统打印。如果您在使用本系统的过程中，发现无法打印的问题，可能就是因为没有安装此打印控件。正常情况下，如果您未安装此控件，在您使用本系统时浏览器会自动提示安装，但如果您的IE浏览器安全级别设置较高，可能会拦截该提示。为了确保您能够正常使用打印功能，请您手动安装本控件。<br />
         <b>1.操作系统32位适用：</b><a href="<%=basePath%>/download/install_lodop32.exe">点击此处</a>下载打印控件安装程序并安装。<br />
         <b>2.操作系统64位适用：</b><a href="<%=basePath%>/download/install_lodop64.exe">点击此处</a>下载打印控件安装程序并安装。<br />
       </div>

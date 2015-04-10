@@ -88,7 +88,7 @@
 
 		function downDrive() {
 			$.miaxisTools.openPopupWin({
-				url : 'miaxisOcx.do?downDrive',
+				url : 'main.do?downDrive',
 				width : 850,
 				height : 500,
 				title : '驱动下载'
