@@ -73,8 +73,7 @@
  </div>
 </div>
 <script>
-	var vendorId = "00001";
-	var finger = new Finger(vendorId);
+	var finger = new Finger("${fingerVerdor}");
 	<% //点击指纹采集按钮 %>
 	function scanFinger(idx) {
 		//如果控件未加载完成则隔一段时间后再试 

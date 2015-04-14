@@ -93,7 +93,7 @@ public class SysParamController extends CommonController {
      * @return
      */
     @RequestMapping(params = "insertOrUpdate")
-    public ModelAndView insertOrUpdate(Long id, String operationType,
+    public ModelAndView insertOrUpdate(String id, String operationType,
             HttpServletRequest request) {
         ModelAndView mav = new ModelAndView(
                 "WEB-INF/pages/system/param/paramDetail");

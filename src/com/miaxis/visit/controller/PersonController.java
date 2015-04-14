@@ -23,6 +23,7 @@ import com.miaxis.common.util.CommonUtil;
 import com.miaxis.common.util.PageConfig;
 import com.miaxis.common.util.QueryCondition;
 import com.miaxis.system.entity.User;
+import com.miaxis.system.service.SysParamService;
 import com.miaxis.visit.entity.FingerInfo;
 import com.miaxis.visit.entity.PersonCert;
 import com.miaxis.visit.entity.PersonInfo;
@@ -45,6 +46,8 @@ public class PersonController extends CommonController {
 	public PersonService personService;
 	@Autowired
 	public PublicService publicService;
+	@Autowired
+	private SysParamService sysParamService;
 	
 	
 	/**
@@ -159,6 +162,14 @@ public class PersonController extends CommonController {
 		} else {
 			mav.getModelMap().put("operationType", "insert");
 		}
+		
+		/************************************************************
+		 * 提取指纹供应商信息
+		 *************************************************************/
+		String fingerVerdor = sysParamService.getValue("fingerVerdor");
+		if(fingerVerdor==null) fingerVerdor="";
+		if(fingerVerdor.equals("")) fingerVerdor="miaxis";
+		mav.getModelMap().put("fingerVerdor", fingerVerdor);
 
 		return mav;
 	}
@@ -249,6 +260,28 @@ public class PersonController extends CommonController {
 		}
 
 		return this.buidMessageMap(msg + "人员成功", "0");
+	}
+	
+	/**
+	 * 拍照
+	 * 
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping(params = "shootPhoto")
+	public ModelAndView shootPhoto(HttpServletRequest request,
+			HttpServletResponse response) {
+		String win = request.getParameter("win");
+		String picwidth = request.getParameter("picwidth");
+		String picheight = request.getParameter("picheight");
+
+		ModelAndView mav = new ModelAndView(
+				"WEB-INF/pages/visit/person/shootPhoto");
+		mav.getModelMap().put("win", win);
+		mav.getModelMap().put("picwidth", picwidth);
+		mav.getModelMap().put("picheight", picheight);
+		return mav;
 	}
 	
 	/**

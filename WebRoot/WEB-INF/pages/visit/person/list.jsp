@@ -121,11 +121,31 @@
 		if (row) {
 			var index = $('#personDg').datagrid('getRowIndex',row);
 			$.miaxisTools.openPopupWin({
+				id	  : 'w_person',
 				url   : 'person.do?insertOrUpdate&operationType=edit&id=' + row.id,
 				width : 700,
 				height: 420,
 				title : '修改人员',
-				okBtnId : 'btn_sub'
+				okBtnId : 'btn_sub',
+				button:[{name: '读二代证',
+					 callback: function(){
+						iframe = this.iframe.contentWindow;
+						$('#btn_idnum', iframe.document).click();
+						return false;
+					 },
+					 focus: true,
+					 disabled:false
+					},
+					{name: '拍照',
+					 callback: function(){
+						 iframe = this.iframe.contentWindow;
+							$('#btn_shoot', iframe.document).click();
+							return false;
+					 },
+					 focus: true,
+					 disabled:false
+					}
+				  ]
 			});
 		} else {
 			$.miaxisTools.alert('请选择需要修改的人员记录!');
@@ -134,11 +154,31 @@
 
 	function newPerson() {
 		$.miaxisTools.openPopupWin({
+			id	   : 'w_person',
 			url    : 'person.do?insertOrUpdate&operationType=insert',
 			width  : 700,
 			height : 420,
 			title  : '新增人员',
-			okBtnId : 'btn_sub'
+			okBtnId : 'btn_sub',
+			button:[{name: '读二代证',
+				 callback: function(){
+					iframe = this.iframe.contentWindow;
+					$('#btn_idnum', iframe.document).click();
+					return false;
+				 },
+				 focus: true,
+				 disabled:false
+				},
+				{name: '拍照',
+				 callback: function(){
+					 iframe = this.iframe.contentWindow;
+						$('#btn_shoot', iframe.document).click();
+						return false;
+				 },
+				 focus: true,
+				 disabled:false
+				}
+			  ]
 		});
 			  
 	}

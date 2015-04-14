@@ -1,11 +1,14 @@
 package com.miaxis.visit.entity;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -53,6 +56,7 @@ public class FingerInfo implements java.io.Serializable {
 	private Date fiGatherTime;
 
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "ID", unique = true, nullable = false)
 	public Integer getId() {
 		return this.id;

@@ -4,9 +4,6 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path;
-
-			
-	
 %>
 
 <script type="text/javascript"
@@ -22,17 +19,17 @@
 <script type="text/javascript"
 	src="<%=basePath%>/plug-in/easyui1.3.2/jquery-easyui-portal/jquery.portal.js"></script>
 <style type="text/css">
-.title {
-	font-size: 16px;
-	font-weight: bold;
-	padding: 20px 10px;
-	background: #eee;
-	overflow: hidden;
-	border-bottom: 1px solid #ccc;
-}
 
-.t-list {
-	padding: 5px;
+.panelContent {
+ 	 width:100%
+}
+.panelContent td{
+	font-family:Tahoma,Verdana,Microsoft YaHei;
+	padding: 0px 15px;
+	border:1px;
+	line-height:28px;
+	font-size: 12px;
+	border-bottom: 1px dashed #ccc;
 }
 
 body {
@@ -50,7 +47,7 @@ body {
 		//add();
 	});
 	function add() {
-		for ( var i = 0; i < 3; i++) {
+		for (var i = 0; i < 3; i++) {
 			var p = $('<div/>').appendTo('body');
 			p.panel({
 				title : 'Title' + i,
@@ -59,13 +56,14 @@ body {
 				height : 100,
 				closable : true,
 				collapsible : true,
-				tools:[
-						{
-							iconCls:'icon-reload',
-							handler:function(){alert('reload')}
-						}]
+				tools : [ {
+					iconCls : 'icon-reload',
+					handler : function() {
+						alert('reload')
+					}
+				} ]
 			});
-			
+
 			$('#pp').portal('add', {
 				panel : p,
 				columnIndex : i
@@ -73,41 +71,120 @@ body {
 		}
 		$('#pp').portal('resize');
 	}
-	
+
 	function remove() {
 		$('#pp').portal('remove', $('#pgrid'));
 		$('#pp').portal('resize');
 	}
 
-	function openUrl() {
-		window.parent.add('学员报名',
-				'student.do?main&menuId=402886a048beffc50148bf04d2b70001');
+	function openUrl(modelCn,url) {
+		window.parent.add(modelCn,url);
 	}
+	
+	function refreshPanel(item){
+		if(item=='panel1'){
+			$("#panel1").html("正在查询....");
+			ajaxData('jobDispatch.do?list',function(rows){
+				var _data=[];
+				for (var i = 0; i < rows.length; i++) {
+					var _row={};
+					_row.url= 'jobDispatch.do?main&id=' +rows[i].id;
+					_row.msg=rows[i].jdJobContent;
+					_row.date=rows[i].jdOperateTime;
+					_data[i]=_row;
+				}
+				var _html = buildHtml('派工管理',_data);
+				$("#panel1").html(_html);
+			});
+		}
+		
+		if(item=='panel2'){
+			$("#panel2").html("正在查询....");
+			ajaxData('jobDispatch.do?list',function(rows){
+				var _data=[];
+				for (var i = 0; i < rows.length; i++) {
+					var _row={};
+					_row.url= 'jobDispatch.do?main&id=' +rows[i].id;
+					_row.msg=rows[i].jdJobContent;
+					_row.date=rows[i].jdOperateTime;
+					_data[i]=_row;
+				}
+				var _html = buildHtml('派工管理',_data);
+				$("#panel2").html(_html);
+			});
+		}
+		
+		if(item=='panel3'){
+			$("#panel3").html("正在查询....");
+			ajaxData('jobDispatch.do?list',function(rows){
+				var _data=[];
+				for (var i = 0; i < rows.length; i++) {
+					var _row={};
+					_row.url= 'jobDispatch.do?main&id=' +rows[i].id;
+					_row.msg=rows[i].jdJobContent;
+					_row.date=rows[i].jdOperateTime;
+					_data[i]=_row;
+				}
+				var _html = buildHtml('派工管理',_data);
+				$("#panel3").html(_html);
+			});
+		}
+	}
+	
+	function buildHtml(modelCn,data){
+		var _html=[];
+		_html.push('<table class="panelContent" >');
+		var _nums = data.length>5?5:data.length;
+		
+		for (var i = 0; i < _nums; i++) {
+			_html.push(' <tr >');
+			_html.push('    <td><a href="#" onClick="openUrl(\''+modelCn+'\',\''+data[i].url+'\')">'+data[i].msg+'</a></td>');
+			_html.push('    <td align="right">'+data[i].date.substr(0,10)+'</td>');
+			_html.push(' </tr >');
+		}
+		
+		_html.push('</table>');
+		return _html.join("");
+	}
+	
+    function ajaxData(url,callback){
+		$.ajax({url:url, type:"POST", dataType : 'json', success:function (data) {
+			 callback(data.rows);
+		}});
+	}
+	
+	refreshPanel('panel1');
+	//refreshPanel('panel2');
+	//refreshPanel('panel3');
 </script>
 
 <body>
 	<div class="easyui-layout" style="width: 100%;" id="cc" fit="true">
 		<div region="center" border="false">
 			<div id="pp" style="position: relative">
-				<div style="width: 20%;">
-					<div title="通知通告" style="height: 200px; padding: 5px;"
+				<div style="width: 20%;" >
+					<div title="通知通告" style="height:auto; padding: 5px;"  collapsible="true" id="panel1"
 						data-options="iconCls:'icon-ok',tools:[
-				{
-					iconCls:'icon-reload',
-					handler:function(){alert('reload')}
-				}]">
-						<div class="t-list">
-						</div>
-						<div class="t-list">
-							
-						</div>
+						{
+							iconCls:'icon-reload',
+							handler:function(){refreshPanel('panel1')}
+						}]">
+						
 					</div>
-					<div title="消息提醒" collapsible="true" closable="true"
-						style="height: 200px; padding: 5px;">
+					<div title="消息提醒" collapsible="true" id="panel2"
+						style="height:auto; padding: 5px;"  	data-options="tools:[
+						{
+							iconCls:'icon-reload',
+							handler:function(){refreshPanel('panel2')}
+						}]">
 					</div>
 				</div>
 				<div style="width: 20%;">
-					<div id="pgrid" title="待办事项" closable="true" style="height: 200px;">
+					<div  title="待办事项" closable="true" style="height: auto;" id="panel3" data-options="tools:[
+						{
+							iconCls:'icon-reload',
+							handler:function(){refreshPanel('panel3')}
+						}]">
 
 					</div>
 				</div>

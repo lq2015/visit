@@ -25,15 +25,15 @@ import com.miaxis.common.util.DateUtil;
 import com.miaxis.common.util.PageConfig;
 import com.miaxis.common.util.QueryCondition;
 import com.miaxis.system.entity.User;
+import com.miaxis.system.service.SysParamService;
 import com.miaxis.visit.entity.BankInfo;
+import com.miaxis.visit.entity.FingerInfo;
 import com.miaxis.visit.entity.GradeDetail;
 import com.miaxis.visit.entity.GradeMaster;
 import com.miaxis.visit.entity.JobBillPic;
 import com.miaxis.visit.entity.JobDispatch;
 import com.miaxis.visit.entity.PersonInfo;
 import com.miaxis.visit.entity.UnitInfo;
-import com.miaxis.visit.entity.UnitPact;
-import com.miaxis.visit.entity.UnitPactPic;
 import com.miaxis.visit.service.JobDispatchService;
 import com.miaxis.visit.service.PublicService;
 
@@ -51,6 +51,8 @@ public class JobDispatchController extends CommonController {
 	public JobDispatchService jobDispatchService;
 	@Autowired
 	public PublicService publicService;
+	@Autowired
+	private SysParamService sysParamService;
 
 	/**
 	 * 主页
@@ -234,7 +236,53 @@ public class JobDispatchController extends CommonController {
 	@RequestMapping(params = "sign")
 	public ModelAndView sign(Integer id) {
 		ModelAndView mav = this.getModelMainMav("WEB-INF/pages/visit/job/sign");
+		
+		/************************************************************
+		 * 派工单信息提取
+		 *************************************************************/
+		JobDispatch jobDispatch = commonService.get(JobDispatch.class, id);
+		String personIds = jobDispatch.getJdPersonIds();
+		String personNames = jobDispatch.getJdPersonNames();
+		if(personIds==null) personIds="";
+		if(personNames==null) personNames="";
+		
+		/************************************************************
+		 * 提取主服务人员ID和指纹信息
+		 *************************************************************/
+		if(!personIds.equals("")){
+			String[] person = personIds.split(",");
+			if(person.length>0){
+				Integer personId= Integer.parseInt(person[0]);
+				String hql = " from FingerInfo t WHERE  t.fiPerson=" + personId;
+				List<FingerInfo> fingerInfoList = (List<FingerInfo>) commonService.getListByHql(FingerInfo.class, hql);
+			
+				for (FingerInfo fingerInfo : fingerInfoList) {
+					mav.getModelMap().put("finger" + fingerInfo.getFiCode(),fingerInfo.getFiTemplate());
+				}
+				mav.getModelMap().put("fingerInfoList", fingerInfoList);
+			}
+		}
+		
+		/************************************************************
+		 * 提取主服务人员名字
+		 *************************************************************/
+		if(!personNames.equals("")){
+			String[] person = personNames.split(",");
+			if(person.length>0){
+				mav.getModelMap().put("person", person[0]);
+			}
+		}
+		
+		/************************************************************
+		 * 提取指纹供应商信息
+		 *************************************************************/
+		String fingerVerdor = sysParamService.getValue("fingerVerdor");
+		if(fingerVerdor==null) fingerVerdor="";
+		if(fingerVerdor.equals("")) fingerVerdor="miaxis";
+		
 		mav.getModelMap().put("id", id);
+		mav.getModelMap().put("fingerVerdor", fingerVerdor);
+		mav.getModelMap().put("personNames", personNames);
 		return mav;
 	}
 

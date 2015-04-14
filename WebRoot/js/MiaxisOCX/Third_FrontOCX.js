@@ -4,6 +4,18 @@ var Finger = function(vendores){
 	this.vendores = vendores ;
 }
  Finger.prototype = {
+		 getImg:function(){ // 获取指纹模板
+			var fingInfo="";
+			if(this.vendores=='miaxis'){
+				var finger = new ZZFinger();
+				fingInfo = finger.getImg();
+			}
+			if(this.vendores=='zt'){
+				var finger = new ZTFinger();
+				fingInfo = finger.getImg();
+			}
+			return fingInfo;
+		},
 		getMB:function(){ // 获取指纹模板
 			var fingInfo="";
 			if(this.vendores=='miaxis'){
@@ -76,8 +88,8 @@ ZZFinger.prototype = {
 			}
 			return false;
 		},
-		match:function(fingerFeature,mb){ // 指纹模板与图像匹配(指纹比对) 参数 指纹模板 和 指纹图像
-			var resultObj = $.parseJSON(CommOcx.ThirdFingerMatch(this.manuCode,mb,fingerFeature));
+		match:function(mb1,mb2){ // 指纹模板与图像匹配(指纹比对) 参数 指纹模板 和 指纹图像
+			var resultObj = $.parseJSON(CommOcx.ThirdFingerMatch(this.manuCode,mb1,mb2));
 			if(resultObj.result=="0"){
 				return true;
 			}else{
@@ -85,15 +97,25 @@ ZZFinger.prototype = {
 			}
 		},
 		getVersion:function(){ // 获取指纹仪硬件版本
-			var resultObj = $.parseJSON(CommOcx.ThirdGetVerFinger(this.manuCode,''));
+			var resultObj = CommOcx.ThirdGetVerFinger(this.manuCode);
 			return resultObj;
 		}
 }
 
 var ZTFinger = function(){}
 ZTFinger.prototype = {
+		getImg:function(){ // 采集图像
+			var result = xt22UOCX.FPIGetFeature(0,10000 );
+		    if(result != 0 ){
+		    	$.miaxisTools.alert('采集指纹特征失败!');
+		    	return false;
+		    }else{
+		    	var mb = xt22UOCX.FPIGetFingerInfo();
+		    	return mb;
+		    }
+		},
 		getTemplate:function(){ // *采集指纹图像
-		var resultObj = "";
+			var resultObj = "";
 			try{
 				result = xt22UOCX.FPIGetTemplate (0, 10000);
 			}catch(e){
@@ -112,19 +134,13 @@ ZTFinger.prototype = {
 			}
 			return "";
 		},
-		match:function(mb2){ // 指纹模板与图像匹配(指纹比对) 参数 指纹模板 和 指纹图像
-			var result = xt22UOCX.FPIGetFeature(0,10000 );
-		    if(result != 0 ){
-		    	$.miaxisTools.alert('采集指纹特征失败!');
-		    }else{
-		    	var mb1 = xt22UOCX.FPIGetFingerInfo();
-				var result = xt22UOCX.xtVerify(mb1, mb2, 3);
-				if(result==0){
-					return true;
-				}else{
-					return false;
-				}
-		    }
+		match:function(mb1,mb2){ // 指纹模板与图像匹配(指纹比对) 参数 指纹模板 和 指纹图像
+			var result = xt22UOCX.xtVerify(mb1, mb2, 3);
+			if(result==0){
+				return true;
+			}else{
+				return false;
+			}
 		},
 		getVersion:function(){ // 获取指纹仪硬件版本
 			var result = xt22UOCX.XTGetVersion();

@@ -1,9 +1,22 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/pages/header.jsp"%>
+<script type="text/javascript" src="<%=basePath%>/js/MiaxisOCX/Third_FrontOCX.js" charset="UTF-8"></script>
 <script type="text/javascript"
 	src="<%=basePath%>/plug-in/jquery/imagePreview.js"></script>
 <body>
 	<div class="easyui-tabs" fit=true>
+	   <object classid="CLSID:A3ECA36F-CD28-422C-918F-5893C6FC9849"
+		id="CommOcx" width="1" height="1" codebase="Third_FrontOCX.ocx">
+		</object>
+		<OBJECT height="0" width="0" align="left"
+			classid="clsid:07390B1A-6918-493E-A465-F857F4A8D655" name="xt22UOCX">
+			<PARAM NAME="_ExtentX" VALUE="265">
+			<PARAM NAME="_ExtentY" VALUE="265">
+			<PARAM NAME="_StockProps" VALUE="0">
+			<embed width="0" height="0">
+			</embed>
+		</OBJECT>
+		
 		<div title="基本信息" style="padding: 10px">
 		<form id="personDetail_form" method="post" novalidate enctype="multipart/form-data" >
 			<input type="hidden" id="btn_sub">
@@ -88,24 +101,24 @@
 					<th>
 						人员照片
                     </th>
-					<th>
-						工作证
+                    <th>
+						工作证	
                     </th>
 				</tr>
 				<tr>
-					<td align="center" >
+					 <td align="center">
 						<div id="preview" style="border:solid 1px #999999;width:80px;height:100px">
 							<img id="personPhoto" width=81 height=101 border=0 />
 						</div>
-                    </td>
-					<td align="center">
+					</td>
+					<td align="center" >
 						<div id="preview2" style="border:solid 1px #999999;width:80px;height:100px">
 							<img id="personCert" width=81 height=101 border=0 />
 						</div>
-					</td>
+                    </td>
 				</tr>
 				<tr>
-					<td align="center">
+					<td align="center" id="selFile">
 						<input type="file" name="files" id="coverPicFile" style="width: 250px; height: 20px;" onChange="selectPhoto(this);" />
                     </td>
 					<td align="center">
@@ -145,8 +158,12 @@
 	</div>
 
 	<script type="text/javascript">
+		var CommOcx;
+	
 		$().ready(function() {
+			CommOcx = document.getElementById("CommOcx");
 			loadWorkUnit();
+			
 			setTimeout(function() {
 				if ('${personInfo.piPhotoUrl}' != '') {
 					$("#personPhoto").attr("src", '${personInfo.piPhotoUrl}');
@@ -177,6 +194,21 @@
 				
 			}, 500)
 		});
+		
+		$("#btn_shoot").click(
+			function() {
+				var api = frameElement.api, W = api.opener;
+				W.$.dialog({
+					title:'拍照',
+					id:Math.round(Math.random()*(1000-100000)+100000),
+					content:'url:person.do?shootPhoto',
+				    lock:true,
+				    max:false,
+				    parent:api,
+				    width:500,
+				    height:350
+				});
+		});
 
 		 <%//选择本地图片文件"%>
 		function selectPhoto(obj){
@@ -196,22 +228,68 @@
 		}
 		
 		$("#btn_sub").click(function() {
+			var params = {operationType : $("#operationType").val()};
+			
 			var photourl = '${personInfo.piPhotoUrl}'; 
 			var coverPicFile = $('#coverPicFile').val(); 
+			var photoData = $('#photoData').val(); 
+			
 			var certurl = '${personInfo.piCertUrl}'; 
 			var coverCertFile = $('#coverCertFile').val(); 
 			
-			if(photourl=='' & coverPicFile=='' ){
-				$.miaxisTools.alert('请上传人员照片!'); 
-				return;
+			if(photourl=='' ){
+				if(coverPicFile=='' & photoData==''){
+					$.miaxisTools.alert('请上传人员照片!'); 
+					return;
+				}				
 			}
-
+			
 			if(certurl=='' & coverCertFile=='' ){
 				$.miaxisTools.alert('请上传工作证!'); 
 				return;
 			}
 			
-			var params = {operationType : $("#operationType").val()};
+			var params = {};
+			if ($("input[type=checkbox]:checked").size() != 2) {
+				$.miaxisTools.alert("请采集2枚指纹！");
+				return false ;
+			}else{
+				$("input[type=checkbox]:checked").each(function(index,element){
+					var num = $(this).val();
+					var fingerData = $("input[name=finger"+num+"]").val();
+					if(num==0){
+						params.finger0= fingerData;
+					}
+					if(num==1){
+						params.finger1= fingerData;
+					}
+					if(num==2){
+						params.finger2= fingerData;
+					}
+					if(num==3){
+						params.finger3= fingerData;
+					}
+					if(num==4){
+						params.finger4= fingerData;
+					}
+					if(num==5){
+						params.finger5= fingerData;
+					}
+					if(num==6){
+						params.finger6= fingerData;
+					}
+					if(num==7){
+						params.finger7= fingerData;
+					}
+					if(num==8){
+						params.finger8= fingerData;
+					}
+					if(num==9){
+						params.finger9= fingerData;
+					}
+				})
+			}
+		
 			params.operationType= $("#operationType").val()
 			params.photoData=$("#photoData").val();
 			
