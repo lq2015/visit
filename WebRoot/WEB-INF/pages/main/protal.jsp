@@ -84,12 +84,12 @@ body {
 	function refreshPanel(item){
 		if(item=='panel1'){
 			$("#panel1").html("正在查询....");
-			ajaxData('jobDispatch.do?list',function(rows){
+			ajaxData('jobDispatch.do?list&qJdStatus=0',function(rows){
 				var _data=[];
 				for (var i = 0; i < rows.length; i++) {
 					var _row={};
-					_row.url= 'jobDispatch.do?main&id=' +rows[i].id;
-					_row.msg=rows[i].jdJobContent;
+					_row.url= 'jobDispatch.do?main&menuId=402886e54c26caab014c2706cf16000a&id=' +rows[i].id;
+					_row.msg='【'+rows[i].unit.uiName+'】'+rows[i].jdJobContent;
 					_row.date=rows[i].jdOperateTime;
 					_data[i]=_row;
 				}
@@ -100,12 +100,12 @@ body {
 		
 		if(item=='panel2'){
 			$("#panel2").html("正在查询....");
-			ajaxData('jobDispatch.do?list',function(rows){
+			ajaxData('jobDispatch.do?list&qJdStatus=1',function(rows){
 				var _data=[];
 				for (var i = 0; i < rows.length; i++) {
 					var _row={};
-					_row.url= 'jobDispatch.do?main&id=' +rows[i].id;
-					_row.msg=rows[i].jdJobContent;
+					_row.url= 'jobDispatch.do?main&menuId=402886e54c26caab014c2706cf16000a&id=' +rows[i].id;
+					_row.msg='【'+rows[i].unit.uiName+'】'+rows[i].jdJobContent;
 					_row.date=rows[i].jdOperateTime;
 					_data[i]=_row;
 				}
@@ -116,12 +116,12 @@ body {
 		
 		if(item=='panel3'){
 			$("#panel3").html("正在查询....");
-			ajaxData('jobDispatch.do?list',function(rows){
+			ajaxData('jobDispatch.do?list&qJdStatus=2',function(rows){
 				var _data=[];
 				for (var i = 0; i < rows.length; i++) {
 					var _row={};
-					_row.url= 'jobDispatch.do?main&id=' +rows[i].id;
-					_row.msg=rows[i].jdJobContent;
+					_row.url= 'jobDispatch.do?main&menuId=402886e54c26caab014c2706cf16000a&id=' +rows[i].id;
+					_row.msg='【'+rows[i].unit.uiName+'】'+rows[i].jdJobContent;
 					_row.date=rows[i].jdOperateTime;
 					_data[i]=_row;
 				}
@@ -154,8 +154,8 @@ body {
 	}
 	
 	refreshPanel('panel1');
-	//refreshPanel('panel2');
-	//refreshPanel('panel3');
+	refreshPanel('panel2');
+	refreshPanel('panel3');
 </script>
 
 <body>
@@ -163,16 +163,16 @@ body {
 		<div region="center" border="false">
 			<div id="pp" style="position: relative">
 				<div style="width: 20%;" >
-					<div title="通知通告" style="height:auto; padding: 5px;"  collapsible="true" id="panel1"
-						data-options="iconCls:'icon-ok',tools:[
+					<div title="待派工" style="height:auto; padding: 5px;"  collapsible="true" id="panel1"
+						data-options="iconCls:'icon-catalog',tools:[
 						{
 							iconCls:'icon-reload',
 							handler:function(){refreshPanel('panel1')}
 						}]">
 						
 					</div>
-					<div title="消息提醒" collapsible="true" id="panel2"
-						style="height:auto; padding: 5px;"  	data-options="tools:[
+					<div title="待签到" collapsible="true" id="panel2"
+						style="height:auto; padding: 5px;"  	data-options="iconCls:'icon-dictionary',tools:[
 						{
 							iconCls:'icon-reload',
 							handler:function(){refreshPanel('panel2')}
@@ -180,7 +180,8 @@ body {
 					</div>
 				</div>
 				<div style="width: 20%;">
-					<div  title="待办事项" closable="true" style="height: auto;" id="panel3" data-options="tools:[
+					<div  title="待签离" closable="true" style="height: auto;padding: 5px;" id="panel3" 
+					data-options="iconCls:'icon-theory',tools:[
 						{
 							iconCls:'icon-reload',
 							handler:function(){refreshPanel('panel3')}
