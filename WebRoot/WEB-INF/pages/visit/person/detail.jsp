@@ -295,5 +295,19 @@
 			
 			$.miaxisTools.ajaxSubmitForm('person.do?save','personDetail_form', params);
 	    });
+		
+		$("#btn_idnum").click(
+			function() {
+				var readStudentIdCard = new IDCard();
+				var result = readStudentIdCard.read();
+				if (result) {
+					//填充信息
+					$('#piName').val(result.SFZ_Name);
+					$('#piIdnum').val(result.SFZ_IDCode);
+					
+					var _data = $.miaxisTools.sfzCastAgeSex(result.SFZ_IDCode);
+					$('#piSex').combobox('setValue',_data.sex);
+				}
+		});
 	</script>
 </body>

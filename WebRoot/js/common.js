@@ -219,6 +219,60 @@
 		} else {
 			previewImage(false, imagefile, previewDiv, imghead, width, height);
 		}
+	},
+	/**
+	 * 身份证号转年龄和性别
+	 * @param sfz
+	 */
+	sfzCastAgeSex : function(sfznum) {
+		var sex;
+		var sex_name;
+		var birthdayValue;
+		if (15 == sfznum.length) {// 15位身份证号码
+			birthdayValue = sfznum.charAt(6) + sfznum.charAt(7);
+			if (parseInt(birthdayValue) < 10) {
+				birthdayValue = '20' + birthdayValue;
+			} else {
+				birthdayValue = '19' + birthdayValue;
+			}
+			birthdayValue = birthdayValue + '-' + sfznum.charAt(8)
+					+ sfznum.charAt(9) + '-' + sfznum.charAt(10)
+					+ sfznum.charAt(11);
+
+			if (parseInt(sfznum.charAt(14) / 2) * 2 != sfznum.charAt(14)) {
+				sex = "1";
+				sex_name = "男";
+			} else {
+				sex = "2";
+				sex_name = "女";
+			}
+
+		}
+
+		if (18 == sfznum.length) {// 18位身份证号码
+			birthdayValue = sfznum.charAt(6) + sfznum.charAt(7)
+					+ sfznum.charAt(8) + sfznum.charAt(9) + '-'
+					+ sfznum.charAt(10) + sfznum.charAt(11) + '-'
+					+ sfznum.charAt(12) + sfznum.charAt(13);
+			if (parseInt(sfznum.charAt(16) / 2) * 2 != sfznum.charAt(16)) {
+				sex = "1";
+				sex_name = "男";
+			} else {
+				sex = "2";
+				sex_name = "女";
+			}
+		}
+
+		var aDate = new Date();
+		var thisYear = aDate.getFullYear();
+		var brith = birthdayValue.substr(0, 4);
+		var age = thisYear - brith;
+		
+		var result={};
+		result.age=age;
+		result.sex=sex_name;
+		result.brithDay=birthdayValue;
+		return result;
 	}
 };
 
