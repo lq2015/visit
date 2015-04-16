@@ -27,18 +27,16 @@ function previewImage(isIE, file, preview, imghead, width, height) {
 	var MAXWIDTH = width;
 	var MAXHEIGHT = height;
 	var div = document.getElementById(preview);
+
 	if (isIE) {
 		// IE预览使用滤镜
 		// var docObj=document.getElementById(file);
 		var imgObjPreview = document.getElementById(imghead);
 		file.select();
 		
-//		var imgSrc = document.selection.createRange().text;  //原方式当file-input隐藏时会有问题 modify by liuq
-		var fileobj = file.target || window.event.srcElement;
-		var imgSrc = fileobj.value;
-		
+		// docObj.blur();
+		var imgSrc = document.selection.createRange().text;
 		var localImagId = document.getElementById(preview);
-		
 		// 必须设置高宽
 		localImagId.style.width = width + "px";
 		localImagId.style.height = height + "px";
@@ -67,10 +65,7 @@ function previewImage(isIE, file, preview, imghead, width, height) {
 	} else {
 		var sFilter = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
 		file.select();
-//		var src = document.selection.createRange().text;
-		var fileobj = file.target || window.event.srcElement;
-		var src = fileobj.value;
-		
+		var src = document.selection.createRange().text;
 		div.innerHTML = '<img id=' + imghead + '>';
 		var img = document.getElementById(imghead);
 		img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
