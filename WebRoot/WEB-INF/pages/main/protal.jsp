@@ -93,7 +93,7 @@ body {
 					_row.date=rows[i].jdOperateTime;
 					_data[i]=_row;
 				}
-				var _html = buildHtml('派工管理',_data);
+				var _html = buildHtml('派工登记',_data);
 				$("#panel1").html(_html);
 			});
 		}
@@ -109,7 +109,7 @@ body {
 					_row.date=rows[i].jdOperateTime;
 					_data[i]=_row;
 				}
-				var _html = buildHtml('派工管理',_data);
+				var _html = buildHtml('派工登记',_data);
 				$("#panel2").html(_html);
 			});
 		}
@@ -125,7 +125,7 @@ body {
 					_row.date=rows[i].jdOperateTime;
 					_data[i]=_row;
 				}
-				var _html = buildHtml('派工管理',_data);
+				var _html = buildHtml('派工登记',_data);
 				$("#panel3").html(_html);
 			});
 		}
