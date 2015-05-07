@@ -19,11 +19,14 @@
 	<script type="text/javascript">
 		$(function(){
 		    $("#maintabs").bind('contextmenu',function(e){
-		        e.preventDefault();
-		        $('#rcmenu').menu('show', {
-		            left: e.pageX,
-		            top: e.pageY
-		        });
+		    	var taby  = $("#maintabs").offset().top;
+		    	if(e.pageY>=taby && e.pageY<=taby+28) {
+		    		e.preventDefault();
+			        $('#rcmenu').menu('show', {
+			            left: e.pageX,
+			            top: e.pageY
+			        });
+		    	}
 		    });
 		    //关闭当前标签页
 		    $("#closecur").bind("click",function(){

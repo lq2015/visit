@@ -16,7 +16,7 @@ import com.miaxis.common.base.IdEntity;
  *
  */
 @Entity
-@Table(name = "T_S_USER_MACHINE_AUTH")
+@Table(name = "t_s_user_machine_auth")
 public class UserMachineAuth extends IdEntity implements java.io.Serializable {
 	
 	/**

@@ -44,7 +44,7 @@ public class BankInfo implements java.io.Serializable {
 	/**
 	 * 联系人手机
 	 */
-	private Integer biMobile;
+	private String biMobile;
 	/**
 	 * 备注
 	 */
@@ -110,11 +110,11 @@ public class BankInfo implements java.io.Serializable {
 	}
 
 	@Column(name = "BI_MOBILE")
-	public Integer getBiMobile() {
+	public String getBiMobile() {
 		return this.biMobile;
 	}
 
-	public void setBiMobile(Integer biMobile) {
+	public void setBiMobile(String biMobile) {
 		this.biMobile = biMobile;
 	}
 

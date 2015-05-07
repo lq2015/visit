@@ -17,7 +17,7 @@ import com.miaxis.common.base.IdEntity;
  *
  */
 @Entity
-@Table(name = "T_S_USER_MACHINE_AUTH_RECORD")
+@Table(name = "t_s_user_machine_auth_record")
 @PrimaryKeyJoinColumn(name = "id")
 public class UserMachineAuthRecord  extends IdEntity implements java.io.Serializable {
 	

@@ -104,7 +104,7 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 			sql.append("\n )");
 		}
 		
-		sql.append("\n WHERE ISVALID='1'");
+		sql.append("\n AND ISVALID='1'");
 		sql.append("\n ORDER BY menuLevel,orderNum");
 		List<Menu> list =this.commonDao.getListBySql(Menu.class,sql.toString());
 		return list;
@@ -148,7 +148,7 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 			/****************************************************
 			 * 除admin外要校验授权机器
 			 ****************************************************/
-			if(!userName.equals("admin")){
+			/*if(!userName.equals("admin")){
 				boolean passTag = false;
 				List<UserMachineAuth> machinelist  = this.commonDao.getListByHql(UserMachineAuth.class, " from UserMachineAuth t WHERE  t.userid='" + user.getId() + "'");
 				for(UserMachineAuth userMachineAuth :machinelist){
@@ -176,7 +176,7 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 				if(!passTag){
 					throw new BusinessException("用户【"+userName+"】未在当前机器授权使用,请授权后使用! <br/>特征信息:<b>"+machineCode+"</b> <a href='#' onclick=authApply('"+machineCode+"')>提交授权申请</a>");
 				}
-			}
+			}*/
 			
 			String dbpsw = user.getPassword();
 			if(dbpsw==null) dbpsw="";
