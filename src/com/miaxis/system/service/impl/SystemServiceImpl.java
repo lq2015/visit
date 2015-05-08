@@ -96,15 +96,16 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 		//超级用户取所有
 		if(user.getUserName().equals("admin") || user.getUserName().equals("super")){
 			sql.append("\n FROM t_s_menu");
+			sql.append("\n WHERE ISVALID='1'");
 		}else{
 			sql.append("\n FROM t_s_menu  WHERE  id IN (");
 			sql.append("\n 	SELECT DISTINCT  menuId FROM t_s_role_menu_auth WHERE  roleId IN (");
 			sql.append("\n 		SELECT roleId FROM t_s_role_user WHERE userId ='" +user.getId()+ "'");
 			sql.append("\n 	)");
 			sql.append("\n )");
+			sql.append("\n AND ISVALID='1'");
 		}
 		
-		sql.append("\n AND ISVALID='1'");
 		sql.append("\n ORDER BY menuLevel,orderNum");
 		List<Menu> list =this.commonDao.getListBySql(Menu.class,sql.toString());
 		return list;

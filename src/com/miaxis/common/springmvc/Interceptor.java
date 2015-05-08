@@ -72,15 +72,15 @@ public class Interceptor extends HandlerInterceptorAdapter {
 				/****************************************************
 				 * 登陆时检测LIC授权
 				 ****************************************************/
-				if(!"main.do?login".equals(requestPath)){
-					if(!user.getUserName().equals("super")){
-						boolean isPass = checkSystemLic(runTimeOut);
-						if(!isPass){
-							response.sendRedirect("main.do?login");
-							return false;
-						}
-					}
-				}
+//				if(!"main.do?login".equals(requestPath)){
+//					if(!user.getUserName().equals("super")){
+//						boolean isPass = checkSystemLic(runTimeOut);
+//						if(!isPass){
+//							response.sendRedirect("main.do?login");
+//							return false;
+//						}
+//					}
+//				}
 			}
 		}
 		
