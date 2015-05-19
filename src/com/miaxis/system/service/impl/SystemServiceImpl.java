@@ -1,8 +1,6 @@
 package com.miaxis.system.service.impl;
 
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +12,7 @@ import com.miaxis.common.exception.BusinessException;
 import com.miaxis.common.util.BrowserUtils;
 import com.miaxis.common.util.CommonUtil;
 import com.miaxis.common.util.ContextHolderUtils;
+import com.miaxis.common.util.HibernateDialectUtils;
 import com.miaxis.common.util.QueryCondition;
 import com.miaxis.system.entity.Function;
 import com.miaxis.system.entity.Log;
@@ -21,7 +20,6 @@ import com.miaxis.system.entity.Menu;
 import com.miaxis.system.entity.RoleFunAuth;
 import com.miaxis.system.entity.RoleMenuAuth;
 import com.miaxis.system.entity.User;
-import com.miaxis.system.entity.UserMachineAuth;
 import com.miaxis.system.service.SystemService;
 
 @Service("systemService")
@@ -91,8 +89,15 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 	public List<Menu> getRoleMenuAuth(User user) {
 		StringBuffer sql = new StringBuffer();
 		sql.append("\n SELECT id,menuName,menuLevel,parentMenu,orderNum,isValid,icoIndex,selIcoIndex,");
-		sql.append("\n 	(CASE WHEN LENGTH(linkPage)>0 THEN (CONCAT(linkPage ,'&menuId=' ,id))  ELSE '' END) AS linkPage ");
-//		sql.append("\n 	(CASE WHEN LENGTH(linkPage)>0 THEN linkPage||'&'||'menuId='||id  ELSE '' END) AS linkPage ");
+		
+		if(HibernateDialectUtils.isMysql()){
+			sql.append("\n 	(CASE WHEN LENGTH(linkPage)>0 THEN (CONCAT(linkPage ,'&menuId=' ,id))  ELSE '' END) AS linkPage ");
+		}
+		
+		if(HibernateDialectUtils.isOracle()){
+			sql.append("\n 	(CASE WHEN LENGTH(linkPage)>0 THEN linkPage||'&'||'menuId='||id  ELSE '' END) AS linkPage ");
+		}
+		
 		//超级用户取所有
 		if(user.getUserName().equals("admin") || user.getUserName().equals("super")){
 			sql.append("\n FROM t_s_menu");
