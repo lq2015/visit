@@ -12,7 +12,7 @@ import com.miaxis.common.base.IdEntity;
  */
 @Entity
 @Table(name = "t_s_role_menu_auth" )
-public class RoleMenuAuth  extends IdEntity  implements java.io.Serializable {
+public class RoleMenuAuth  extends IdEntity  {
 	
 	private String roleId;
 	private String menuId;

@@ -24,7 +24,7 @@ import com.miaxis.common.springmvc.DateJsonSerializer;
  */
 @Entity
 @Table(name = "t_s_log")
-public class Log extends IdEntity implements java.io.Serializable {
+public class Log extends IdEntity  {
 	private User user;
 	/**
 	 * 日志等级

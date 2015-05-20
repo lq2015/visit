@@ -17,7 +17,7 @@ import com.miaxis.common.base.IdEntity;
  */
 @Entity
 @Table(name = "t_s_function")
-public class Function extends IdEntity  implements java.io.Serializable {
+public class Function extends IdEntity  {
 	/**
 	 * 按钮中文名
 	 */

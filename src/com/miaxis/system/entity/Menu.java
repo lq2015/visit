@@ -15,7 +15,7 @@ import com.miaxis.common.base.IdEntity;
  */
 @Entity
 @Table(name = "t_s_menu")
-public class Menu  extends IdEntity implements java.io.Serializable {
+public class Menu  extends IdEntity {
 	/**
 	 * 菜单名称
 	 */

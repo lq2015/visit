@@ -15,7 +15,7 @@ import com.miaxis.common.base.IdEntity;
 @Entity
 @Table(name = "t_s_user")
 @PrimaryKeyJoinColumn(name = "id")
-public class User extends IdEntity implements java.io.Serializable {
+public class User extends IdEntity {
 	private static final long serialVersionUID = 1L;
 	public static String initial_Pwd = "123456";
 	

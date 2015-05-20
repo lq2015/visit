@@ -19,7 +19,7 @@ import com.miaxis.common.base.IdEntity;
  */
 @Entity
 @Table(name = "t_s_param")
-public class SysParam extends IdEntity implements java.io.Serializable {
+public class SysParam extends IdEntity  {
 
     /**
      * 

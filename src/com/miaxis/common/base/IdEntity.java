@@ -8,7 +8,7 @@ import javax.persistence.MappedSuperclass;
 import org.hibernate.annotations.GenericGenerator;
 
 @MappedSuperclass
-public abstract class IdEntity {
+public abstract class IdEntity  implements java.io.Serializable {
 	private String id;
 
 	@Id

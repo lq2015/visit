@@ -14,7 +14,7 @@ import com.miaxis.common.base.IdEntity;
  */
 @Entity
 @Table(name = "t_s_role_user")
-public class RoleUser extends IdEntity implements java.io.Serializable {
+public class RoleUser extends IdEntity {
 	/**
 	 * 角色ID
 	 */

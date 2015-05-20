@@ -14,7 +14,7 @@ import com.miaxis.common.base.IdEntity;
  */
 @Entity
 @Table(name = "t_s_role_fun_auth")
-public class RoleFunAuth  extends IdEntity  implements java.io.Serializable {
+public class RoleFunAuth  extends IdEntity  {
 	
 	private String roleId;
 	private String menuId;
