@@ -12,7 +12,6 @@ import com.miaxis.common.base.service.CommonServiceImpl;
 import com.miaxis.common.exception.BusinessException;
 import com.miaxis.common.util.ContextHolderUtils;
 import com.miaxis.system.entity.User;
-import com.miaxis.visit.entity.PersonInfo;
 import com.miaxis.visit.entity.UnitPact;
 import com.miaxis.visit.entity.UnitPactPic;
 import com.miaxis.visit.service.UnitPactService;
@@ -80,9 +79,17 @@ public class UnitPactServiceImpl extends CommonServiceImpl implements UnitPactSe
 		UnitPact unitPact = this.commonDao.get(UnitPact.class, id);
 		if (unitPact == null) {
 			throw new BusinessException("要删除服务合同信息不存在!");
-		} else {
-			this.commonDao.delete(unitPact);
+		} 
+		
+		/*****************************************
+		 * 删除该合同的下的图片数据
+		 *****************************************/
+		List<UnitPactPic> list = this.commonDao.getListByHql(UnitPactPic.class, "from UnitPactPic where upPactId="+id);
+		for(UnitPactPic unitPactPic :list){
+			this.commonDao.delete(unitPactPic);
 		}
+			
+		this.commonDao.delete(unitPact);
 	}
 
 	@Override

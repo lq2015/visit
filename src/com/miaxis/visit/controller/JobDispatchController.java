@@ -27,6 +27,7 @@ import com.miaxis.common.util.QueryCondition;
 import com.miaxis.system.entity.User;
 import com.miaxis.system.service.SysParamService;
 import com.miaxis.visit.entity.BankInfo;
+import com.miaxis.visit.entity.DepartmentInfo;
 import com.miaxis.visit.entity.FingerInfo;
 import com.miaxis.visit.entity.GradeDetail;
 import com.miaxis.visit.entity.GradeMaster;
@@ -104,6 +105,32 @@ public class JobDispatchController extends CommonController {
 
 		if (StringUtils.isNotEmpty(qJdStatus)) {
 			qc.eq("jdStatus", qJdStatus);
+		}
+		
+		
+		User user = this.getLoginUser();
+		/*****************************************
+		 * 如果登陆人员是总部,则对显示拥有该管理服务项目的数据
+		 ******************************************/
+		if(user.getPersontype().equals(User.PersonType.GENERAL.getCode())){
+			String departmantId = user.getDepartmant();
+			DepartmentInfo dept = commonService.get(DepartmentInfo.class, departmantId);
+			if(dept!=null){
+				String itemId = dept.getDiServeItemId();
+				if(itemId==null) itemId="";
+				qc.like("jdServeItemId", itemId.concat("%"));
+			}
+		}
+		
+		/*****************************************
+		 * 如果登陆人员是支行
+		 * 1.则对显示该支行的数据
+		 * 2.只能查看派工后的
+		 ******************************************/
+		if(user.getPersontype().equals(User.PersonType.BRANCH.getCode())){
+			qc.like("bankInfo.id", user.getDepartmant());
+			String zt[]={JobDispatch.Status.DISPATCH.getCode(),JobDispatch.Status.SIGN.getCode(),JobDispatch.Status.OUT.getCode()};
+			qc.in("jdStatus", zt);
 		}
 
 		List list = commonService.getPageList(JobDispatch.class, pageConfig, qc);
@@ -578,7 +605,7 @@ public class JobDispatchController extends CommonController {
 	@ResponseBody
 	public List getServeUnit(String serveItem) {
 		String hql = " from UnitInfo a ,UnitPact b "
-				+ "where  a.uiStatus = '1' and a.id=b.upUnitId and b.upServeItem like '"
+				+ "where  a.uiStatus = '1' and a.id=b.upUnitId and b.upServeItemId like '"
 				+ serveItem + "%' ";
 		List<Object[]> list = commonService.getListByHql(null, hql);
 

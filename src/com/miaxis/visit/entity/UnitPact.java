@@ -36,6 +36,10 @@ public class UnitPact implements java.io.Serializable {
 	 */
 	private String upNumber;
 	/**
+	 * 合同服务项目ID
+	 */
+	private String upServeItemId;
+	/**
 	 * 合同服务项目
 	 */
 	private String upServeItem;
@@ -91,6 +95,15 @@ public class UnitPact implements java.io.Serializable {
 
 	public void setUpNumber(String upNumber) {
 		this.upNumber = upNumber;
+	}
+	
+	@Column(name = "UP_SERVE_ITEM_ID", length = 20)
+	public String getUpServeItemId() {
+		return upServeItemId;
+	}
+
+	public void setUpServeItemId(String upServeItemId) {
+		this.upServeItemId = upServeItemId;
 	}
 
 	@Column(name = "UP_SERVE_ITEM", length = 250)

@@ -34,6 +34,14 @@ public class DepartmentInfo implements java.io.Serializable {
 	 */
 	private String diTelephone;
 	/**
+	 * 管理服务项目ID
+	 */
+	private String diServeItemId;
+	/**
+	 * 管理服务项目
+	 */
+	private String diServeItem;
+	/**
 	 * 备注
 	 */
 	private String diMemo;
@@ -77,6 +85,24 @@ public class DepartmentInfo implements java.io.Serializable {
 
 	public void setDiTelephone(String diTelephone) {
 		this.diTelephone = diTelephone;
+	}
+	
+	@Column(name = "DI_SERVE_ITEM_ID", length = 20)
+	public String getDiServeItemId() {
+		return diServeItemId;
+	}
+
+	public void setDiServeItemId(String diServeItemId) {
+		this.diServeItemId = diServeItemId;
+	}
+	
+	@Column(name = "DI_SERVE_ITEM", length = 250)
+	public String getDiServeItem() {
+		return diServeItem;
+	}
+
+	public void setDiServeItem(String diServeItem) {
+		this.diServeItem = diServeItem;
 	}
 
 	@Column(name = "DI_MEMO", length = 250)

@@ -19,6 +19,8 @@ import com.miaxis.common.exception.BusinessException;
 import com.miaxis.common.util.DateUtil;
 import com.miaxis.common.util.PageConfig;
 import com.miaxis.common.util.QueryCondition;
+import com.miaxis.system.entity.User;
+import com.miaxis.visit.entity.DepartmentInfo;
 import com.miaxis.visit.entity.JobApply;
 import com.miaxis.visit.service.JobApplyService;
 
@@ -82,6 +84,27 @@ public class JobApplyController extends CommonController {
 		}
 		if (StringUtils.isNotEmpty(qJaStatus)) {
 			qc.eq("jaStatus", qJaStatus);
+		}
+		
+		User user = this.getLoginUser();
+		/*****************************************
+		 * 如果登陆人员是总部,则对显示拥有该管理服务项目的数据
+		 ******************************************/
+		if(user.getPersontype().equals(User.PersonType.GENERAL.getCode())){
+			String departmantId = user.getDepartmant();
+			DepartmentInfo dept = commonService.get(DepartmentInfo.class, departmantId);
+			if(dept!=null){
+				String itemId = dept.getDiServeItemId();
+				if(itemId==null) itemId="";
+				qc.like("jaServeItemId", itemId.concat("%"));
+			}
+		}
+		
+		/*****************************************
+		 * 如果登陆人员是支行,则对显示该支行的数据
+		 ******************************************/
+		if(user.getPersontype().equals(User.PersonType.BRANCH.getCode())){
+			qc.like("bankInfo.id", user.getDepartmant());
 		}
 
 		List list = commonService.getPageList(JobApply.class, pageConfig, qc);

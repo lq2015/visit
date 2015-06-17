@@ -138,6 +138,12 @@
 		}
 	});
 	
+	$('#jdUnit').combobox({
+		onSelect : function(node) {
+			clearPerson();
+		}
+	});
+	
 	function selectPerson() {
 		var _jdUnit =$('#jdUnit').combobox('getValue')
 		if(_jdUnit){

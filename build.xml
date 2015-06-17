@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="antwar" name="visit">   
+    <target name="init" description="设置初始化打 war 包需要的路径变量">   
+        <property name="name" value="visit"/>   
+        <property name="src" value="${basedir}/src"/>   
+        <property name="lib" value="${basedir}/anttest/WebRoot/WEB-INF/lib"/>   
+        <property name="webapp" value="${basedir}/WebRoot/WEB-INF/"/>   
+    </target>   
+       
+    <target name="antwar" depends="init" description="打 war 包，不将 java 文件打入包内">   
+        <war warfile="${basedir}/visit.war" webxml="${webapp}/web.xml">   
+            <lib dir="${webapp}/lib"/>   
+            <fileset dir="${basedir}/WebRoot"/>   
+        </war>   
+    </target>   
+       
+</project>  

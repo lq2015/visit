@@ -23,6 +23,8 @@ import com.miaxis.common.exception.BusinessException;
 import com.miaxis.common.util.CommonUtil;
 import com.miaxis.common.util.PageConfig;
 import com.miaxis.common.util.QueryCondition;
+import com.miaxis.system.entity.User;
+import com.miaxis.visit.entity.DepartmentInfo;
 import com.miaxis.visit.entity.ServeCategory;
 import com.miaxis.visit.entity.UnitPact;
 import com.miaxis.visit.entity.UnitPactPic;
@@ -85,6 +87,20 @@ public class UnitPactController extends CommonController {
 			}
 		}
 		qc.asc("id");
+		
+		User user = this.getLoginUser();
+		/*****************************************
+		 * 如果登陆人员是总部,则对显示拥有该管理服务项目的数据
+		 ******************************************/
+		if(user.getPersontype().equals(User.PersonType.GENERAL.getCode())){
+			String departmantId = user.getDepartmant();
+			DepartmentInfo dept = commonService.get(DepartmentInfo.class, departmantId);
+			if(dept!=null){
+				String itemId = dept.getDiServeItemId();
+				if(itemId==null) itemId="";
+				qc.like("upServeItemId", itemId.concat("%"));
+			}
+		}
 
 		List list = commonService.getPageList(UnitPact.class, pageConfig, qc);
 		return this.buidResultMap(list, list.size());
@@ -150,7 +166,9 @@ public class UnitPactController extends CommonController {
 			for(int i=0;i<files.length;i++){
 				Map<String, String> map = publicService.uploadPic(files[i], null, 
 						CommonUtil.UNIT_PACT, false);
-				list.add(map);
+				if(!map.get("picData").equals("")){
+					list.add(map);
+				}
 			}
 			
 			if (operationType.equals("edit")) {

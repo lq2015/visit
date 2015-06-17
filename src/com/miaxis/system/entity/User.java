@@ -6,6 +6,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import com.miaxis.common.base.IdEntity;
+import com.miaxis.common.util.CodeNameEnum;
 
 /**
  * 系统用户
@@ -118,5 +119,42 @@ public class User extends IdEntity {
 
 	public void setFix(String fix) {
 		this.fix = fix;
+	}
+	
+	/**
+	 * 记录状态
+	 * @author liu.qiao
+	 *
+	 */
+	public static class Status extends CodeNameEnum<String> {
+		public static Status NORMAL = new Status("1", "正常");
+		public static Status CANCEL = new Status("9", "注销");
+
+		public static Status[] values() {
+			return new Status[] {NORMAL, CANCEL };
+		}
+
+		public Status(String code, String name) {
+			super(code, name);
+		}
+	}
+	
+	/**
+	 * 人员类型
+	 * @author liu.qiao
+	 *
+	 */
+	public static class PersonType extends CodeNameEnum<String> {
+		public static PersonType GENERAL = new PersonType("1", "总行");
+		public static PersonType BRANCH = new PersonType("2", "支行");
+		public static PersonType MAINTAIN = new PersonType("3", "运维");
+
+		public static PersonType[] values() {
+			return new PersonType[] {GENERAL, BRANCH,MAINTAIN};
+		}
+
+		public PersonType(String code, String name) {
+			super(code, name);
+		}
 	}
 }

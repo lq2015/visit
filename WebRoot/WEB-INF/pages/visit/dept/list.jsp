@@ -54,6 +54,9 @@
 						<th field="diTelephone" width="40" align="center" sortable="true">
 							 联系电话
 						</th>
+						<th field="diServeItem" width="60" align="center" sortable="true">
+							 管理服务项目
+						</th>
 						<th field="diStatus" width="20" align="center" sortable="true" formatter="formatDeptStatus">
 							状态
 						</th>
@@ -86,7 +89,7 @@
 			$.miaxisTools.openPopupWin({
 				url : 'department.do?detail&id=' + row.id,
 				width : 550,
-				height : 180,
+				height : 240,
 				title : '查看部门',
 				okBtnId : 'btn_sub'
 			});
@@ -107,7 +110,7 @@
 				$.miaxisTools.openPopupWin({
 					url   : 'department.do?insertOrUpdate&operationType=edit&id=' + row.id,
 					width : 550,
-					height: 180,
+					height: 240,
 					title : '修改部门',
 					okBtnId : 'btn_sub'
 				});
@@ -121,7 +124,7 @@
 		$.miaxisTools.openPopupWin({
 			url    : 'department.do?insertOrUpdate&operationType=insert',
 			width  : 550,
-			height : 180,
+			height : 240,
 			title  : '新增部门',
 			okBtnId : 'btn_sub'
 		});

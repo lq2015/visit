@@ -27,7 +27,8 @@
 							合同服务项目:
 						</th>
 						<td >
-							 <input class="easyui-combotree" id="upServeItem" name="upServeItem" 
+							 <input id="upServeItem" name="upServeItem" type="hidden" value="${unitPact.upServeItem}" />
+							 <input class="easyui-combotree" id="upServeItemId" name="upServeItemId" 
 							data-options="url:'unitPact.do?getServeItem',method:'get',panelHeight:120,panelWidth:200,editable:true,required:true" style="width:280px;">				
 						</td>
 					</tr>
@@ -109,14 +110,20 @@
 			if ('${unitPact.upUnitId}' != '') {
 				$('#upUnitId').combobox('setValue','${unitPact.upUnitId}');
 			}
-			if ('${unitPact.upServeItem}' != '') {
-				$('#upServeItem').combotree('setValue','${unitPact.upServeItem}');
+			if ('${unitPact.upServeItemId}' != '') {
+				$('#upServeItemId').combotree('setValue','${unitPact.upServeItemId}');
 			}
 		}, 500)
 		
 		if($("#operationType").val()=='edit'){
 			$("#id").attr('readonly','true');
 			$("#id").attr("style","border:0;border-bottom:1 solid black;background:white;");
+		}
+	});
+	
+	$('#upServeItemId').combotree({
+		onSelect : function(node) {
+			$('#upServeItem').val(node.text);
 		}
 	});
 	
