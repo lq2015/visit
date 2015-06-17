@@ -59,7 +59,7 @@ var ZZFinger = function(){
 }
 ZZFinger.prototype = {
 		getImg:function(){ // *采集指纹图像
-		var resultObj = "";
+			var resultObj = "";
 			try{
 				resultObj = $.parseJSON(CommOcx.ThirdGetImage(this.manuCode,''));
 			}catch(e){
@@ -105,6 +105,7 @@ ZZFinger.prototype = {
 var ZTFinger = function(){}
 ZTFinger.prototype = {
 		getImg:function(){ // 采集图像
+			this.resetDevice();
 			var result = xt22UOCX.FPIGetFeature(0,10000 );
 		    if(result != 0 ){
 		    	$.miaxisTools.alert('采集指纹特征失败!');
@@ -117,6 +118,7 @@ ZTFinger.prototype = {
 		getTemplate:function(){ // *采集指纹图像
 			var resultObj = "";
 			try{
+				this.resetDevice();
 				result = xt22UOCX.FPIGetTemplate (0, 10000);
 			}catch(e){
 				exceptions(e);
@@ -127,6 +129,7 @@ ZTFinger.prototype = {
 			return result;
 		},
 		getMB:function(){ // 获取指纹模板
+			this.resetDevice();
 			var result = this.getTemplate();
 			if(result==0){
 				result = xt22UOCX.FPIGetFingerInfo();
@@ -135,6 +138,7 @@ ZTFinger.prototype = {
 			return "";
 		},
 		match:function(mb1,mb2){ // 指纹模板与图像匹配(指纹比对) 参数 指纹模板 和 指纹图像
+			this.resetDevice();
 			var result = xt22UOCX.xtVerify(mb1, mb2, 3);
 			if(result==0){
 				return true;
@@ -145,6 +149,9 @@ ZTFinger.prototype = {
 		getVersion:function(){ // 获取指纹仪硬件版本
 			var result = xt22UOCX.XTGetVersion();
 			return result;
+		},
+		resetDevice:function(){
+			xt22UOCX.XTResetDevice();
 		}
 }
 
