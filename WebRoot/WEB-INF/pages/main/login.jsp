@@ -36,14 +36,14 @@ form input {
 									<td><img src="images/user.png"></td>
 									<td width="40px">用户:</td>
 									<td><input class="easyui-textbox" id="loginName"
-										name="loginName" value="admin" 
+										name="loginName" value="" 
 										data-options="required:true,iconCls:'icon-node'" missingMessage="用户名不能为空"/></td>
 								</tr>
 								<tr height="40">
 									<td><img src="images/pwd.png"></td>
 									<td>密码:</td>
 									<td><input class="easyui-validatebox" id="loginPassword"
-										type="password" name="loginPassword" value="123456"
+										type="password" name="loginPassword" value=""
 										data-options="required:true" missingMessage="密码不能为空"/></td>
 								</tr>
 								<tr height="60">

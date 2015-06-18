@@ -94,7 +94,7 @@ public class ServeCategoryServiceImpl extends CommonServiceImpl implements
 			throw new BusinessException("该服务类别信息不存在!");
 		} 
 		
-		String hql = " from ServeCategory where  scParent = '" + serveCategory.getScParent() + "'";
+		String hql = " from ServeCategory where  scParent = '" + id + "'";
 		List<ServeCategory> list = this.commonDao.getListByHql(ServeCategory.class, hql);
 		
 		if(list.size()>0){
