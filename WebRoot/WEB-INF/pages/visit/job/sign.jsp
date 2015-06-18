@@ -1,141 +1,142 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/pages/header.jsp"%>
-<script type="text/javascript"
-	src="<%=basePath%>/js/MiaxisOCX/Third_FrontOCX.js" charset="UTF-8"></script>
+<script type="text/javascript" src="<%=basePath%>/js/MiaxisOCX/Third_FrontOCX.js" charset="UTF-8"></script>
 <style>
-<!--
-.leftHand {
-	width: 160px;
-	padding-left: 0px;
-	float: left;
+.button {
+	width: 60px;
+	height: 25px
 }
-
-.rightHand {
-	float: right;
-	padding-right: 0px;
-}
-
-.handchx {
-	float: left;
-	width: 31px;
-}
-
-.handchx1 {
-	float: right;
-	width: 31px;
-}
-
-.handimg {
-	border: none;
-	clear: both;
-	width: 364px;
-}
-
-.handimg img {
-	margin: 0 0 0 0;
-}
-
-.hand {
-	
-}
--->
 </style>
+
 <body>
-  <object classid="CLSID:A3ECA36F-CD28-422C-918F-5893C6FC9849"
-	id="CommOcx" width="1" height="1" codebase="Third_FrontOCX.ocx">
-	</object>
-	<OBJECT height="0" width="0" align="left"
-		classid="clsid:07390B1A-6918-493E-A465-F857F4A8D655" name="xt22UOCX">
+	<object classid="CLSID:A3ECA36F-CD28-422C-918F-5893C6FC9849" id="CommOcx" width="1" height="1" codebase="Third_FrontOCX.ocx"> </object>
+	<OBJECT height="0" width="0" align="left" classid="clsid:07390B1A-6918-493E-A465-F857F4A8D655" name="xt22UOCX">
 		<PARAM NAME="_ExtentX" VALUE="265">
 		<PARAM NAME="_ExtentY" VALUE="265">
 		<PARAM NAME="_StockProps" VALUE="0">
 		<embed width="0" height="0">
 		</embed>
 	</OBJECT>
-		
-	<input type="hidden" name="finger0" value="${finger0}">
-	<input type="hidden" name="finger1" value="${finger1}">
-	<input type="hidden" name="finger2" value="${finger2}">
-	<input type="hidden" name="finger3" value="${finger3}">
-	<input type="hidden" name="finger4" value="${finger4}">
-	<input type="hidden" name="finger5" value="${finger5}">
-	<input type="hidden" name="finger6" value="${finger6}">
-	<input type="hidden" name="finger7" value="${finger7}">
-	<input type="hidden" name="finger8" value="${finger8}">
-	<input type="hidden" name="finger9" value="${finger9}">
+
 	<div class="ftitle">
 		<span>服务人员信息</span>
 	</div>
-	<table width="100%" cellspacing="0">
-		<tr>
-			<td align="left" style="text-align:left;padding-left: 30px"
-				height="30" valign="top">
-				<div style="height: 5px">${personNames }</div> <br />
-			</td>
-		</tr>
-	</table>
-	<div class="ftitle">
-		<span>【${person}】指纹信息</span>
-	</div>
-	<div class="clear"></div>
-	<div class="hand"
-		style="text-align:center; border:0px solid #dcdcdc; height:230px; width:380px; margin:0 auto;">
-		<span class="leftHand"> <c:forEach var="i" begin="0" end="4">
-				<span class="handchx"> <input type="checkbox"
-					name="fingerCode" value="${i}" disabled />
-				</span>
-			</c:forEach>
-		</span> <span class="rightHand">
-			<div>
-				<c:forEach var="i" begin="5" end="9">
-					<span class="handchx1"> <input type="checkbox"
-						name="fingerCode" value="${14-i}" disabled />
-					</span>
-				</c:forEach>
+	<div style="margin-left: 20px">
+		<c:forEach var="person" items="${personList}">
+			<div style="float:left;margin-left:10px;margin-bottom: 20px;">
+				<div id="preview_${person.id}" style="border:solid 1px #999999;width:120px;height:140px">
+					<img name="photo_${person.id}" width=120 height=140 border=0 src="${person.piPhotoUrl}"  />
+				</div>
+				<div style="height:35px;line-height:35px;padding-left:10px;padding-right:10px;background-color:#EBEBEB;border:1px solid #CCCCCC">
+					<div style="float:left;"><a href="#" onClick="detailPerson(${person.id})">${person.piName}</a></div>
+					<div style="float:right;margin-top: 5px">
+						<input id="check_${person.id}" type="button" class="button" value="未验证" onClick="checkFinger(${person.id})"/>
+					</div>
+				</div>
 			</div>
-		</span>
-		<div class="handimg">
-			<img src="${pageContext.request.contextPath}/images/hand.gif"
-				width="364" height="197"></img>
-		</div>
-		<input type="hidden" id="btn_sub">
+		</c:forEach>
 	</div>
+	<input type="hidden" id="btn_sub">
+
 	<script>
 		var finger = new Finger("${fingerVerdor}");
+		var passNumber=0;
+		var personNumber="${personNumber}";
+	
+		<c:forEach var="person" items="${personList}">
+			$("#preview_${person.id}").poshytip({
+				alignY : 'center',
+				className : 'tip-twitter',
+				content : function() {
+					var _html = [];
+					_html.push('<div style="background-color:#D6DCF1;padding:10px;border:1px solid #7E92D3">');
+					_html.push('<b>姓 名:</b>：${person.piName}');
+					_html.push('<br>');
+					_html.push('<b>身份证号:</b>${person.piIdnum}');
+					_html.push('<br>');
+					_html.push('<b>性 别:</b>${person.piSex}');
+					_html.push('<br>');
+					_html.push('<b>联系手机:</b>${person.piMobile}');
+					_html.push('<br>');
+					_html.push('<b>职 务:</b>${person.piPost}');
+					_html.push('<div>');
+					return _html.join("");
+				}
+			});
+		</c:forEach>
 		
-		$().ready(function() {
-			<%//表单提交后或编辑时初始化指纹选项%>
-			<c:if test="${fingerInfoList != null}">
-				var fingerIndex = new Array();
-				<c:forEach var="finger" items="${fingerInfoList}">
-					fingerIndex.push("${finger.fiCode}");
-				</c:forEach>
-				$("input[name='fingerCode']").each(function(){
-					this.checked = jQuery.inArray(this.value, fingerIndex) == -1 ? false : true;
-				});
-			</c:if>
-		})
+		function checkFinger(personId){
+			if(personId){
+				var fingerData = finger.getImg();
+				var verify=0;
+				if(fingerData){
+					getFinger(personId,function(datajson){
+						for(var i=0;i<datajson.length;i++){
+							var mb = datajson[i].fiTemplate;
+							var result = finger.match(mb,fingerData); <%//中正的传值顺序不能调，模板前，指纹图像后%> 
+							if(result){
+								passNumber++;
+								$("#check_"+personId).val('验证通过');
+								$("#check_"+personId).attr({"disabled":"disabled"});
+							}else{
+								verify++;
+								if(verify==2){
+									$.miaxisTools.alert('指纹验证没有通过，签到失败!');
+								}
+							}
+						}
+					});
+				}
+			}
+		}
+		
+		<%//提取指纹%> 
+		function getFinger(personId,callback){
+			$.ajax({
+				type : 'POST',
+				dataType : 'json',
+				url : "person.do?getFinger&personId="+personId,
+				error : function() {
+					$.miaxisTools.alert("获取人员指纹信息失败!"); 
+				},
+				success : function(datajson) {
+					callback(datajson);
+				}
+			});	
+		}
+		
+		function detailPerson(personId){
+			var api = frameElement.api, W = api.opener;
+			W.$.dialog({
+				title:'查看人员信息',
+				id:Math.round(Math.random()*(1000-100000)+100000),
+				content:'url:<%=basePath%>/person.do?detail&id=' + personId,
+			    lock:true,
+			    max:false,
+			    parent:api,
+			    width:600,
+			    height:380,
+			    cancel : true,
+			    cancelVal:'关闭'
+			});
+		}
 		
 		$("#btn_sub").click(function() {
-			var fingerData = finger.getImg();
-			var verify=0;
-			if(fingerData){
-				$("input[type=checkbox]:checked").each(function(index,element){
-					var num = $(this).val();
-					var mb = $("input[name=finger"+num+"]").val();
-					var result = finger.match(mb,fingerData);  <%//中正的传值顺序不能调，模板前，指纹图像后%>
-					if(result){
+			if(personNumber==""){
+				personNumber="0";
+			}
+			if(passNumber<personNumber){
+				$.miaxisTools.confirm('还有未验证通过的人员,是否允许签到?',function(r){
+					if(r){
 						var params = {id : ${id}};
 						$.miaxisTools.ajaxSubmit('jobDispatch.do?signSubmit', params);
-						return false;
-					}else{
-						verify++;
-						if(verify==2){
-							$.miaxisTools.alert('指纹验证没有通过，签到失败!');
-						}
 					}
 				})
+			}else{
+				var params = {id : ${id}};
+				$.miaxisTools.ajaxSubmit('jobDispatch.do?signSubmit', params);
 			}
 		});
+		
 	</script>
 </body>

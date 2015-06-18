@@ -278,16 +278,22 @@ public class JobDispatchController extends CommonController {
 		 *************************************************************/
 		if(!personIds.equals("")){
 			String[] person = personIds.split(",");
-			if(person.length>0){
-				Integer personId= Integer.parseInt(person[0]);
-				String hql = " from FingerInfo t WHERE  t.fiPerson=" + personId;
+			List<PersonInfo> personList = new ArrayList();
+			for(int i=0;i<person.length;i++){
+				Integer personId= Integer.parseInt(person[i]);
+				/*String hql = " from FingerInfo t WHERE  t.fiPerson=" + personId;
 				List<FingerInfo> fingerInfoList = (List<FingerInfo>) commonService.getListByHql(FingerInfo.class, hql);
 			
 				for (FingerInfo fingerInfo : fingerInfoList) {
 					mav.getModelMap().put("finger" + fingerInfo.getFiCode(),fingerInfo.getFiTemplate());
 				}
-				mav.getModelMap().put("fingerInfoList", fingerInfoList);
+				mav.getModelMap().put("fingerInfoList", fingerInfoList);*/
+				
+				PersonInfo personInfo = commonService.get(PersonInfo.class, personId);
+				personList.add(personInfo);
+				
 			}
+			mav.getModelMap().put("personList", personList);
 		}
 		
 		/************************************************************
@@ -296,7 +302,7 @@ public class JobDispatchController extends CommonController {
 		if(!personNames.equals("")){
 			String[] person = personNames.split(",");
 			if(person.length>0){
-				mav.getModelMap().put("person", person[0]);
+				mav.getModelMap().put("personNumber", person.length);
 			}
 		}
 		

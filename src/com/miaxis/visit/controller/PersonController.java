@@ -105,6 +105,22 @@ public class PersonController extends CommonController {
 		List list = commonService.getPageList(PersonInfo.class,pageConfig,qc);
 		return this.buidResultMap(list,list.size());
 	}
+	
+	/**
+	 * 查看明细
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(params = "detail")
+	public ModelAndView detail(HttpServletRequest request) {
+		String id = request.getParameter("id");
+		PersonInfo personInfo = commonService.get(PersonInfo.class, Integer.parseInt(id));
+
+		ModelAndView mav = new ModelAndView("WEB-INF/pages/visit/person/personabout");
+		mav.getModelMap().put("personInfo", personInfo);
+		return mav;
+	}
 
 
 	/**
@@ -313,6 +329,18 @@ public class PersonController extends CommonController {
 	public List getWorkUnit() {
 		String  hql = " from UnitInfo where  uiStatus = '1'" ;
 		List<UnitInfo> list = commonService.getListByHql(UnitInfo.class, hql);
+		return list;
+	}
+	
+	/**
+	 * 获取单位
+	 * @return
+	 */
+	@RequestMapping(params = "getFinger")
+	@ResponseBody
+	public List getFinger(Integer personId) {
+		String hql = " from FingerInfo t WHERE  t.fiPerson=" + personId;
+		List<FingerInfo> list = (List<FingerInfo>) commonService.getListByHql(FingerInfo.class, hql);
 		return list;
 	}
 }

@@ -261,8 +261,8 @@
 			$.miaxisTools.openPopupWin({
 				id     : 'w_out',
 				url    : 'jobDispatch.do?sign&id='+row.id,
-				width  : 590,
-				height : 340,
+				width  : 600,
+				height : 420,
 				title  : '签到',
 				okBtnId : 'btn_sub'
 			});
