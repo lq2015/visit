@@ -140,8 +140,6 @@
     	var row = $('#jobApplyDg').datagrid('getSelected');
 		if (row){
 			var index = $('#jobApplyDg').datagrid('getRowIndex',row);
-			alert(0)
-			return ;
 			if (row.jaStatus=='0') {
 				$.miaxisTools.alert('此申请单还没有提交,不能审核!');
 				return false;
