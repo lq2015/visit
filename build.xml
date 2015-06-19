@@ -8,7 +8,7 @@
     </target>   
        
     <target name="antwar" depends="init" description="打 war 包，不将 java 文件打入包内">   
-        <war warfile="${basedir}/visit.war" webxml="${webapp}/web.xml">   
+        <war warfile="${basedir}/visit.rar" webxml="${webapp}/web.xml">   
             <lib dir="${webapp}/lib"/>   
             <fileset dir="${basedir}/WebRoot"/>   
         </war>   

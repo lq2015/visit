@@ -113,6 +113,10 @@
 		$('#jobDg').datagrid('load',$.miaxisTools.serializeObject($('#job_query_form')));
 	}
 	
+	function roloadJob() {
+		$('#jobDg').datagrid('reload');
+	}
+	
 	function detailJob() {
 		var row = $('#jobDg').datagrid('getSelected');
 		if (row) {
@@ -290,8 +294,7 @@
 			
 			$.post('jobDispatch.do?out',{id:row.id}, function (data){
 				if(data.result==0){
-					row.jdStatus='3';
-					$('#jobDg').datagrid('refreshRow', index);
+					roloadJob();
 				}
 	            $.miaxisTools.alert(data.message);
 	         },'json');

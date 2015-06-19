@@ -39,6 +39,7 @@
 	<input type="hidden" id="btn_sub">
 
 	<script>
+		var api = frameElement.api, W = api.opener;
 		var finger = new Finger("${fingerVerdor}");
 		var passNumber=0;
 		var personNumber="${personNumber}";
@@ -130,11 +131,13 @@
 					if(r){
 						var params = {id : ${id}};
 						$.miaxisTools.ajaxSubmit('jobDispatch.do?signSubmit', params);
+						setTimeout("W.roloadJob()", 500);
 					}
 				})
 			}else{
 				var params = {id : ${id}};
 				$.miaxisTools.ajaxSubmit('jobDispatch.do?signSubmit', params);
+				setTimeout("W.roloadJob()", 500);
 			}
 		});
 		
