@@ -120,6 +120,11 @@ public class JobApplyController extends CommonController {
 	@RequestMapping(params = "apply")
 	public ModelAndView apply() {
 		ModelAndView mav = new ModelAndView("WEB-INF/pages/visit/jobApply/apply");
+		User user = this.getLoginUser();
+		if(user.getPersontype().equals(User.PersonType.BRANCH.getCode())){
+			mav.getModelMap().put("bankId", user.getDepartmant());
+		}
+		
 		return mav;
 	}
 

@@ -61,6 +61,7 @@
 	
 	<script type="text/javascript">
 	$().ready(function() {
+		var bandId = '${bankId}'
 			
 		if ('${jobApply.jaServeItemId}' != '') {
 			$('#jaServeItemId').combotree('setValue','${jobApply.jaServeItemId}');
@@ -68,6 +69,12 @@
 		
 		if ('${jobApply.jaJobBank}' != '') {
 			$('#jaJobBank').combobox('setValue','${jobApply.jaJobBank}');
+			$('#jaJobBank').combobox('disable');
+		}else{
+			if(bandId!=''){
+				$('#jaJobBank').combobox('setValue',bandId);
+				$('#jaJobBank').combobox('disable');
+			}
 		}
 	});
 	
