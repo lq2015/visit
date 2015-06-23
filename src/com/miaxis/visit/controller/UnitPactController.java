@@ -238,39 +238,72 @@ public class UnitPactController extends CommonController {
 	@RequestMapping(params = "getServeItem")
 	@ResponseBody
 	public ArrayList getServeItem() {
+		
+		String itemId = "";
+		User user = this.getLoginUser();
+		/*****************************************
+		 * 如果登陆人员是总部,则对显示拥有该管理服务项目的数据
+		 ******************************************/
+		if(user.getPersontype().equals(User.PersonType.GENERAL.getCode())){
+			String departmantId = user.getDepartmant();
+			DepartmentInfo dept = commonService.get(DepartmentInfo.class, departmantId);
+			if(dept!=null){
+				itemId = dept.getDiServeItemId();
+				if(itemId==null) itemId="";
+			}
+		}
+		
 
 		// 得到第一级分类信息
 		String hql = " from ServeCategory where scLevel=1";
+		if(!itemId.equals("")){
+			hql= hql+" and id = '"+itemId+"'";
+		}
+		
 		List<ServeCategory> firstLevelList = commonService.getListByHql(
 				ServeCategory.class, hql);
 
 		// 得到第二级分类信息
 		String hql2 = " from ServeCategory where scLevel=2";
+		if(!itemId.equals("")){
+			hql2= hql2+" and (id = '"+itemId+"' or scParent like '"+itemId+"%')";
+		}
 		List<ServeCategory> secondLevelList = commonService.getListByHql(
 				ServeCategory.class, hql2);
 
 		// 组合树格式
 		ArrayList parentList = new ArrayList();
-		for (ServeCategory serveCategory1 : firstLevelList) {
-			ArrayList chirldList = new ArrayList();
-			Map<String, Object> firstMap = new HashMap<String, Object>();
-			firstMap.put("id", serveCategory1.getId());
-			firstMap.put("text", serveCategory1.getScCategory());
-			// cityMap.put("iconCls", "icon-tip");
+		if(firstLevelList.size()>0){
+			for (ServeCategory serveCategory1 : firstLevelList) {
+				ArrayList chirldList = new ArrayList();
+				Map<String, Object> firstMap = new HashMap<String, Object>();
+				firstMap.put("id", serveCategory1.getId());
+				firstMap.put("text", serveCategory1.getScCategory());
+				// cityMap.put("iconCls", "icon-tip");
 
-			for (ServeCategory serveCategory2 : secondLevelList) {
-				if (serveCategory2.getScParent().equals(serveCategory1.getId())) {
-					Map<String, Object> secondMap = new HashMap<String, Object>();
-					secondMap.put("id", serveCategory2.getId());
-					secondMap.put("text", serveCategory2.getScCategory());
-					chirldList.add(secondMap);
+				for (ServeCategory serveCategory2 : secondLevelList) {
+					if (serveCategory2.getScParent().equals(serveCategory1.getId())) {
+						Map<String, Object> secondMap = new HashMap<String, Object>();
+						secondMap.put("id", serveCategory2.getId());
+						secondMap.put("text", serveCategory2.getScCategory());
+						chirldList.add(secondMap);
+					}
 				}
+				if (chirldList.size() > 0) {
+					firstMap.put("children", chirldList);
+				}
+				parentList.add(firstMap);
 			}
-			if (chirldList.size() > 0) {
-				firstMap.put("children", chirldList);
+		}else{
+			for (ServeCategory serveCategory2 : secondLevelList) {
+				ArrayList chirldList = new ArrayList();
+				Map<String, Object> firstMap = new HashMap<String, Object>();
+				firstMap.put("id", serveCategory2.getId());
+				firstMap.put("text", serveCategory2.getScCategory());
+				parentList.add(firstMap);
 			}
-			parentList.add(firstMap);
 		}
+		
 		return parentList;
 	}
 }
