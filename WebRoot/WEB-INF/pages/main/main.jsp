@@ -165,7 +165,7 @@
 	<!-- 底部 -->
 	<div region="south" border="false" class='top_menu_bar'>
 		<div align="center" style="color: #0000000;">
-			<span><b>技术维护：杭州浙泰科技有限公司</b> V1.0.0 Build:150410-01</span> <span
+			<span><b>技术维护：杭州浙泰科技有限公司</b> V1.0.0 Build:150623-01</span> <span
 				style=" float:right; margin-right:30px;"><img
 				src="images/unstick.gif" style="height:13px; " /> <a href="#"
 				onClick="downDrive()">驱动下载</a></span>
